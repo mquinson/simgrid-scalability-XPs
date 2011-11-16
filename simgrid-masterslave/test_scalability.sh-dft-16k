@@ -1,0 +1,44 @@
+#! /bin/bash
+#set -e
+# export LD_LIBRARY_PATH=/home/mquinson/install-3.5-ctx/lib
+export LD_LIBRARY_PATH=/home/mquinson/install-3.6.1/lib
+
+#cmd="java -cp /home/mquinson/src_java:/home/mquinson/simgrid-ctx/jar/simgrid.jar BasicTest msg_platform.xml masterslave_mailbox_deployment.xml" # 2>/dev/null"
+cmd="./masterslave_mailbox msg_platform.xml masterslave_mailbox_deployment.xml --log=msg_test.thres=critical --log=simix_kernel.thres=critical"
+#cmd="$cmd --cfg=contexts/factory:raw"
+cmd="$cmd --cfg=contexts/stack_size:16"
+
+#$cmd
+uname -a
+ldd ./masterslave_mailbox
+echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH $cmd
+
+for slave in 100 500 1000 5000 10000 20000 25000 50000 ; do # 75000 100000 200000; do
+   printf "%6d slaves\n" $slave;
+   for task in 100 500 1000 5000 10000 50000 100000 500000 1000000 ; do # 5000000 ; do
+
+       printf "  %7d tasks: (" $task;
+       ./masterslave_mailbox_deployment_gen.pl $task $slave < msg_platform.xml > masterslave_mailbox_deployment.xml ;
+       # chauffe, marcel, chauffe.
+#       sh -c "$cmd" >/dev/null 2>&1 || true
+#       echo -n "c"
+       
+       un=`/usr/bin/time $cmd 2>&1 >/dev/null |tail -2|head -1| sed 's/user.*//'`
+       echo -n "."
+       deux=`/usr/bin/time $cmd 2>&1 >/dev/null |tail -2|head -1| sed 's/user.*//'`
+       echo -n "."
+       trois=`/usr/bin/time $cmd 2>&1 >/dev/null |tail -2|head -1| sed 's/user.*//'`
+       echo -n "."
+       quatre=`/usr/bin/time $cmd 2>&1 >/dev/null |tail -2|head -1| sed 's/user.*//'`
+#       echo -n "."
+#       cinq=`/usr/bin/time $cmd 2>&1 >/dev/null |tail -2|head -1| sed 's/user.*//'`
+       echo -n ".) "
+#       moy=`perl -e "print \"($un+$deux+$trois+$quatre+$cinq)/5=\".(($un+$deux+$trois+$quatre+$cinq)/5);"`
+       moy=`perl -e "print (($un+$deux+$trois+$quatre)/4);"`
+       echo "$moy ($un $deux $trois $quatre)"
+   done;
+done;
+
+uname -a
+ldd ./masterslave_mailbox
+echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH $cmd
