@@ -1,10 +1,11 @@
 #set -e
+test_to_run=v37_raw
 
-slaves="100 500 1000 5000 10000 20000 25000  50000 75000 100000 200000"
- tasks="100 500 1000 5000 10000 50000 100000 500000      1000000 5000000"
+timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 maxslaves=200000
 maxtasks=1000000
 
+me=tmp/`hostname -s`
 cmd=""
 logs=/dev/null
 function cmdline_setup() {
@@ -47,7 +48,7 @@ function cmdline_setup() {
    *) echo "Cannot parse the argument '$arg'"; exit 1;
   esac
   
-  logs="/home/mquinson/logs/simgrid-ms.$id."`date +%y%m%d`.`hostname`
+  logs="/home/mquinson/precious.git/logs/simgrid-masterslave.$id."`date +%y%m%d`.`hostname`
 }
 
 function dolog() {
@@ -65,10 +66,8 @@ function header() {
   dolog `ldd $bin`
   dolog LD_LIBRARY_PATH=$LD_LIBRARY_PATH $cmd
   dolog "##########################################################################################"
-  dolog "Tasks set: $tasks; slaves set: $slaves"
 }
 
-timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 dolog "Legend: slave task wallclock usertime systemtime swapoutamount exitstatus # commandline used" 
 
 slave=""
@@ -90,30 +89,30 @@ function runit() {
       ./masterslave_mailbox_deployment_gen.pl $task $slave < $master_platf > masterslave_mailbox_deployment.xml
 
        dolog "############ New test (slave: $slave task: $task)" 
-       /usr/bin/time -q --quiet -f "$timefmt" -o timings $cmd >stdout 2>stderr
+       /usr/bin/time  -f "$timefmt" -o $me.timings $cmd >$me.stdout 2>$me.stderr
        echo "# STDOUT follows" >> $logs
-       sed 's/^/# /' stdout >> $logs
+       sed 's/^/# /' $me.stdout >> $logs
        
        echo "# STDERR follows" >> $logs
-       sed 's/^/# /g' stderr >> $logs
-       grep "Command terminated by signal" timings | sed 's/^/# /g' >> $logs
+       sed 's/^/# /g' $me.stderr >> $logs
+       grep "Command terminated by signal" $me.timings | sed 's/^/# /g' >> $logs
 
-       if grep -q "Command terminated by signal" timings ; then
+       if grep -q "Command terminated by signal" $me.timings ; then
           echo -n "# $id $slave $task " >> $logs
        else   
           echo -n "$id $slave $task " >> $logs
        fi
-       cat timings |grep -v "Command terminated by signal" >> $logs
+       cat $me.timings |grep -v "Command terminated by signal" >> $logs
        
        echo -n "$id $slave $task "
-       cat timings |grep -v "Command terminated by signal" 
+       cat $me.timings |grep -v "Command terminated by signal" 
 }
 
 
 for i in `seq 1 200 ` ; do
 
   create_test_uniform
-  cmdline_setup v37_ctx
+  cmdline_setup $test_to_run
   header
   dolog "Current test: slave:$slave task:$task"
   runit
