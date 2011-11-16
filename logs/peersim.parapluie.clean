@@ -1,0 +1,20 @@
+[time=6600000]:[with N=100 current nodes UP] [847997 messages] [1.569882 average hops] [1099 msec average transimission time] 
+16.36user 0.20system 0:14.86elapsed 111%CPU (0avgtext+0avgdata 947680maxresident)k
+--
+[time=6600000]:[with N=500 current nodes UP] [1030002 messages] [2.121538 average hops] [1484 msec average transimission time] 
+58.56user 0.97system 0:57.15elapsed 104%CPU (0avgtext+0avgdata 6377952maxresident)k
+--
+[time=6600000]:[with N=1000 current nodes UP] [1143346 messages] [2.465031 average hops] [1725 msec average transimission time] 
+107.53user 0.98system 1:46.14elapsed 102%CPU (0avgtext+0avgdata 6379360maxresident)k
+--
+[time=6600000]:[with N=5000 current nodes UP] [1254447 messages] [2.801870 average hops] [1960 msec average transimission time] 
+548.60user 1.79system 9:01.15elapsed 101%CPU (0avgtext+0avgdata 6542016maxresident)k
+--
+[time=6600000]:[with N=10000 current nodes UP] [1411266 messages] [3.277052 average hops] [2294 msec average transimission time] 
+1126.87user 3.46system 18:34.58elapsed 101%CPU (0avgtext+0avgdata 12734480maxresident)k
+--
+[time=6600000]:[with N=50000 current nodes UP] [1526077 messages] [3.624705 average hops] [2538 msec average transimission time] 
+8051.39user 9.87system 2:12:42elapsed 101%CPU (0avgtext+0avgdata 16597360maxresident)k
+--
+[time=6600000]:[with N=100000 current nodes UP] [1638093 messages] [3.963894 average hops] [2775 msec average transimission time] 
+16758.41user 15.56system 4:36:15elapsed 101%CPU (0avgtext+0avgdata 16547808maxresident)k
