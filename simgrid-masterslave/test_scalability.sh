@@ -47,7 +47,7 @@ function cmdline_setup() {
    *) echo "Cannot parse the argument '$arg'"; exit 1;
   esac
   
-  logs="log.urand-all.$id"
+  logs="~/logs/simgrid-ms.$id."`date +%y%m%d`.`hostname`
 }
 
 function dolog() {
@@ -68,29 +68,22 @@ function header() {
   dolog "Tasks set: $tasks; slaves set: $slaves"
 }
 
-timefmt="%E %U %S %W %x # %C"
+timefmt="%e %U %S %W %x # %C"
 dolog "Legend: slave task wallclock usertime systemtime swapoutamount exitstatus # commandline used" 
 
 slave=""
 task=""
-function create_test_from_list() {
-  RAND=`od -d -N2 -An /dev/urandom`
-  LINES=`for slave in $slaves; do
-     for task in $tasks ; do
-       echo ${slave}XX${task}
-     done
-  done`
-  NLINES=`echo $LINES|tr ' ' '\n' | wc -l`
-  NLINE=`expr $RAND % $NLINES + 1`
-  LINE=`echo $LINES|tr ' ' '\n' | head -n $NLINE  | tail -1`
-  slave=`echo $LINE | sed 's/X.*//'`
-  task=`echo $LINE | sed 's/[^X]*XX//'`
+
+function roll() {
+  max=$1
+  rand=`dd if=/dev/urandom count=1 2> /dev/null | cksum | cut -f1 -d" "`  
+  res=`expr $rand % $max`
+  echo $res
 }
+
 function create_test_uniform() {
-  rand=`dd if=/dev/urandom count=1 2> /dev/null | cksum | cut -f1 -d" "`
-  slave=`expr $rand % $maxslaves`
-  rand=`dd if=/dev/urandom count=1 2> /dev/null | cksum | cut -f1 -d" "`
-  task=`expr $rand % $maxtasks`
+  slave=`roll $maxslaves`
+  task=`roll $maxtasks`
 }
 
 function runit() {
