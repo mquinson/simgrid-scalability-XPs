@@ -47,7 +47,7 @@ function cmdline_setup() {
    *) echo "Cannot parse the argument '$arg'"; exit 1;
   esac
   
-  logs="~/logs/simgrid-ms.$id."`date +%y%m%d`.`hostname`
+  logs="/home/mquinson/logs/simgrid-ms.$id."`date +%y%m%d`.`hostname`
 }
 
 function dolog() {
@@ -68,7 +68,7 @@ function header() {
   dolog "Tasks set: $tasks; slaves set: $slaves"
 }
 
-timefmt="%e %U %S %W %x # %C"
+timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 dolog "Legend: slave task wallclock usertime systemtime swapoutamount exitstatus # commandline used" 
 
 slave=""
