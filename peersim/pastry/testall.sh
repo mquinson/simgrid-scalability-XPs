@@ -1,0 +1,17 @@
+#! /bin/bash
+
+#for size in 100 500 1000 5000 10000 50000 100000 500000 1000000 ; do 
+for size in  1000000 ; do
+
+  echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  
+
+  sed "s/THESIZE/$size/" example.cfg > theconfig
+  echo -n "XXXXXXXXXXXXXX size: "
+  grep "^SIZE" theconfig
+  /usr/bin/time java -cp `find -L lib/ -name "*.jar" | tr [:space:] :`:"":classes peersim.Simulator theconfig
+
+done

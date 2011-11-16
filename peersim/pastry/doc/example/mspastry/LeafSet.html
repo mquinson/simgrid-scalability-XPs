@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><!--JBuilder QuickDoc-->
+<HEAD>
+<TITLE>Class example.mspastry.LeafSet</TITLE><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+</HEAD>
+<BODY>
+
+<H2>
+<FONT SIZE="-1">example.mspastry</FONT>
+<BR>Class LeafSet</H2>
+<DL>
+<DT>public class <B>LeafSet</B><DT>implements java.lang.Cloneable
+</DL>
+<DL><DD><p>Title: MSPASTRY</p> <p>Description: MsPastry implementation for PeerSim</p> <p>Copyright: Copyright (c) 2007</p> <p>Company: The Patry Group</p><DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Version:</B><DD>1.0</DD>
+<DT><B>Author:</B><DD>Elisa Bisoffi, Manuel Cortella</DD>
+</DL>
+<TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2">
+<B>Field Detail</B>
+</FONT></TD></TR></TABLE>
+
+<A NAME="left"></A>
+
+<H3>left</H3>
+<PRE>
+private java.math.BigInteger[] <B>left</B></PRE>
+<DL><DD>ordered array of the nodeIds inserted closest to and lower than the nodeId<DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<A NAME="right"></A>
+
+<H3>right</H3>
+<PRE>
+private java.math.BigInteger[] <B>right</B></PRE>
+<DL><DD>ordered array of the nodeIds inserted closest to and higher than the nodeId<DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<A NAME="size"></A>
+
+<H3>size</H3>
+<PRE>
+private int <B>size</B></PRE>
+<DL><DD>total size of the leaf set<DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<A NAME="hsize"></A>
+
+<H3>hsize</H3>
+<PRE>
+private int <B>hsize</B></PRE>
+<DL><DD>size of both left and right part of the leaf set<DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<A NAME="nodeId"></A>
+
+<H3>nodeId</H3>
+<PRE>
+java.math.BigInteger <B>nodeId</B></PRE>
+<DL><DD>pivot nodeId<DL><DD></DD></DL></DD>
+</DL>
+<DL></DL>
+<HR>
+
+<TABLE BORDER="1" CELLPADDING="3" CELLSPACING="0" WIDTH="100%">
+<TR BGCOLOR="#CCCCFF"><TD COLSPAN=1><FONT SIZE="+2">
+<B>Method Detail</B>
+</FONT></TD></TR></TABLE>
+
+<A NAME="indexOf(java.math.BigInteger)"></A>
+
+<H3>indexOf</H3>
+<PRE>
+private int <B>indexOf</B>(java.math.BigInteger&nbsp;keyToFind)</PRE>
+<DL><DD>returns EMPTY if the leaf set does not contains the specified Key. returns the position in one of the two arrays of the keyToFind otherwise. to establish if the keyToFind is located in left or in right array, simply check if newNode > keyToFind (right) or not (left)<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>keyToFind</CODE> - long</DD>
+<DT><B>Returns:</B><DD>int</DD>
+</DL>
+<HR>
+
+<A NAME="shift(int)"></A>
+
+<H3>shift</H3>
+<PRE>
+private void <B>shift</B>(int&nbsp;pos)</PRE>
+<DL><DD>effettua lo scorrimento di un array di una posizione, a partire dall'elemento di indice pos (compreso).<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>a</CODE> - long[]</DD>
+<DD><CODE>sz</CODE> - int</DD>
+<DD><CODE>n</CODE> - long</DD>
+</DL>
+<HR>
+
+<A NAME="correctRightPosition(java.math.BigInteger)"></A>
+
+<H3>correctRightPosition</H3>
+<PRE>
+private int <B>correctRightPosition</B>(java.math.BigInteger&nbsp;n)</PRE>
+<DL><DD>Empty indicates: DO NOT (RE)INSERT!!!<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>n</CODE> - long</DD>
+<DT><B>Returns:</B><DD>int</DD>
+</DL>
+<HR>
+
+<A NAME="correctLeftPosition(java.math.BigInteger)"></A>
+
+<H3>correctLeftPosition</H3>
+<PRE>
+private int <B>correctLeftPosition</B>(java.math.BigInteger&nbsp;n)</PRE>
+<DL><DD>Empty indicates: DO NOT (RE)INSERT!!!<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>n</CODE> - long</DD>
+<DT><B>Returns:</B><DD>int</DD>
+</DL>
+<HR>
+
+<A NAME="push(java.math.BigInteger)"></A>
+
+<H3>push</H3>
+<PRE>
+public void <B>push</B>(java.math.BigInteger&nbsp;newNode)</PRE>
+<DL><DD>push into the leafset the specified node, by according the properties specified by the mspastry protocol<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>newNode</CODE> - long</DD>
+</DL>
+<HR>
+
+<A NAME="main(java.lang.String[])"></A>
+
+<H3>main</H3>
+<PRE>
+public static void <B>main</B>(java.lang.String[]&nbsp;args)</PRE>
+<DL><DD>Test<DL><DD></DD></DL></DD>
+</DL>
+<DL><DT><B>Parameters:</B><DD><CODE>args</CODE> - String[]</DD>
+</DL>
+<HR>
+
+</BODY>
+</HTML>
