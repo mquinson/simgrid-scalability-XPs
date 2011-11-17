@@ -2,7 +2,7 @@
 
 maxpow=22
 SGPATH=/home/mquinson/install-3.7
-
+cmd="./goal_test --cfg=network/model:LV08 platform.xml"
 
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 
@@ -22,7 +22,7 @@ function roll() {
   echo $res
 }
 
-for i in `seq 1 10` ; do
+for i in `seq 1 50` ; do
   echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
   echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
@@ -34,7 +34,7 @@ for i in `seq 1 10` ; do
   
   killall -KILL goal_test 2>/dev/null
    
-  /usr/bin/time -f "$timefmt" -o $me.timings ./goal_test --cfg=network/model:LV08 platform.xml
+  /usr/bin/time -f "$timefmt" -o $me.timings $cmd
 
   if grep "Command terminated by signal" $me.timings ; then
     echo "Damn, error detected:"
