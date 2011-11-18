@@ -3,8 +3,8 @@
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 me=tmp/`hostname -s`
 
-maxtasks=1000000
-maxslaves=5000
+maxtasks=500000
+maxslaves=2000
 maxjobsize=1000000
 maxfileINsize=1000000
 maxfileOUTsize=1000000
