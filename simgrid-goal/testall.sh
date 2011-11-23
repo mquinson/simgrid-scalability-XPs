@@ -2,7 +2,7 @@
 
 maxpow=22
 SGPATH=/home/mquinson/install-3.7
-cmd="./goal_test --cfg=network/model:LV08 platform.xml"
+cmd="./goal_test --cfg=network/model:SMPI platform.xml"
 
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 
