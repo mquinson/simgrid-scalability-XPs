@@ -10,4 +10,5 @@ simgrid-masterslave/tmp/*
 
 simgrid-goal/goal_test
 simgrid-goal/platform.xml
-simgrid-goal/tmp/*
+simgrid-goal/tmp/*simgrid-masterslave/masterslave_mailbox_deployment.xml
+simgrid-goal/tmp/
