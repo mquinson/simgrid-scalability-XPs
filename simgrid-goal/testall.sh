@@ -1,6 +1,6 @@
 #! /bin/bash
 
-maxpow=22
+maxpow=30
 SGPATH=/home/mquinson/install-3.7
 cmd="./goal_test --cfg=network/model:SMPI platform.xml"
 
@@ -22,11 +22,12 @@ function roll() {
   echo $res
 }
 
-for i in `seq 1 50` ; do
+for i in 22 23 24 ; do
   echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
   echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
-  pow=`roll $maxpow`
+  pow=$i 
+  #`roll $maxpow`
   size=`dc -e "2 $pow ^p"`
   
   echo "pow:$pow size:$size"
@@ -34,7 +35,7 @@ for i in `seq 1 50` ; do
   
   killall -KILL goal_test 2>/dev/null
    
-  /usr/bin/time -f "$timefmt" -o $me.timings $cmd
+  /usr/bin/time -f "$timefmt" -o $me.timings $cmd pow:$pow
 
   if grep "Command terminated by signal" $me.timings ; then
     echo "Damn, error detected:"
