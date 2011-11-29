@@ -4,9 +4,11 @@ apt-get -y install cmake-curses-gui libpcre3-dev sun-java6-jdk dtach git-core je
 
 swapoff -va
 
-#if hostname |grep -q pastel ; then
+if hostname |grep -q pastel ; then
   echo "Changing the CPU freq to 1000MHz" # because we are on pastel"
   for cpu in `cpufreq-info |grep analyzing|sed 's/[^0-9]*//g'` ; do
     cpufreq-set -r -d 1000MHz -u 1000MHz -c $cpu
   done
-#fi
+else
+  echo "NOT CHANGING THE CPU FREQ. FIX IT IF YOU RUN GOAL TESTS"
+fi
