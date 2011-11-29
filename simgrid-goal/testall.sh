@@ -1,6 +1,8 @@
 #! /bin/bash
 
 maxpow=30
+clSize=1024
+degree=64
 SGPATH=/home/mquinson/install-3.7
 cmd="./goal_test --cfg=network/model:SMPI platform.xml"
 
@@ -30,8 +32,9 @@ for pow in `seq 1 25` ; do
   #pow=`roll $maxpow`
   size=`dc -e "2 $pow ^p"`
   
-  echo "pow:$pow size:$size"
-  sed "s/THESIZE/$size/" platform.xml.in > platform.xml
+  echo "pow:$pow size:$size clusterSize:$clSize degree:$degree "
+  ./create_hierarchical_clusters.pl $pow $clSize $degree > platform.xml
+#  sed "s/THESIZE/$size/" platform.xml.in > platform.xml
   
   killall -KILL goal_test 2>/dev/null
   
