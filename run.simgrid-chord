@@ -1,0 +1,4 @@
+#! /bin/bash
+
+cd /home/mquinson/precious.git/simgrid-chord
+./exp_lv5_par_2m 2>&1 |cat >> ~/precious.git/logs/simgrid-chord.`date +%y%m%d`.`hostname`

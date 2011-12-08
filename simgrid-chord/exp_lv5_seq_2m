@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for i in 2000000; do
+
+  echo "$i nodes, network LV08 precision 1e-5, sequential"
+  cmd="../chord One_cluster_nobb_"$i"_hosts.xml ../chord$i.xml --log=root.thres:critical --cfg=contexts/stack_size:16 --cfg=network/model:LV08 --cfg=maxmin/precision:0.00001"
+  echo $cmd
+  /usr/bin/time $cmd
+  echo
+done
+
