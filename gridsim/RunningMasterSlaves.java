@@ -18,7 +18,6 @@ class RunningMasterSlaves extends GridSim{
 	private Integer ID_;
 	private GridletList list_;
 	private GridletList receiveList_= new GridletList();
-	private int totalResource_;
 	private static int totalNumberOfHost = 5000; // total number of hosts
 	private static int fileSize = 5000; // total number of hosts
 	private static int outputSize = 1000 ; // default job size
@@ -36,10 +35,9 @@ class RunningMasterSlaves extends GridSim{
 	 * @see gridsim.GridSim#Init(int, Calendar, boolean, String[], String[],
 	 *          String)
 	 */
-	RunningMasterSlaves(String name, double baud_rate, int total_resource,
+	RunningMasterSlaves(String name, double baud_rate, 
 			int jobCount, int jobSize) throws Exception {
 		super(name, baud_rate);
-		this.totalResource_ = total_resource;
 
 		// Gets an ID for this entity wich will be the master.
 		this.ID_ = new Integer( getEntityId(name) );
@@ -64,10 +62,10 @@ class RunningMasterSlaves extends GridSim{
 			super.gridSimHold(1.); // hold by one (simulated) second 
 
 			LinkedList resList = super.getGridResourceList();
-			if (resList.size() == this.totalResource_) {
+			if (resList.size() == totalNumberOfHost) {
 				// get their ID and proceed
-				resourceID = new int[this.totalResource_];
-				for (int i = 0; i < this.totalResource_; i++) 
+				resourceID = new int[totalNumberOfHost];
+				for (int i = 0; i < totalNumberOfHost; i++) 
 					resourceID[i] = ( (Integer)resList.get(i) ).intValue();
 				break;
 				
@@ -82,7 +80,7 @@ class RunningMasterSlaves extends GridSim{
 		{
 			Gridlet gridlet =  this.list_.get(i);
 
-			int id = random.nextInt(this.totalResource_);
+			int id = random.nextInt(totalNumberOfHost);
 
 			// Sends one Gridlet to a grid resource specified in "resourceID"
 			super.gridletSubmit(gridlet, resourceID[id]);
@@ -161,10 +159,9 @@ class RunningMasterSlaves extends GridSim{
 			for (int j = 0; j< totalNumberOfHost; j++) {
 				createdResourceList.add(createGridResource("Resource_"+j));
 			}
-			int total_resource = 3;
 
 			// Creates the RunningMasterSlaves object
-			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00, total_resource, jobCount, jobSize);
+			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00,  jobCount, jobSize);
 
 			// Run the simulation
 			GridSim.startGridSimulation();
