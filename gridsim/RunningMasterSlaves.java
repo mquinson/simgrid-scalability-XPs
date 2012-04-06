@@ -17,7 +17,7 @@ import gridsim.*;
 class RunningMasterSlaves extends GridSim{
 	private Integer ID_;
 	private GridletList list_;
-	private GridletList receiveList_;
+	private GridletList receiveList_= new GridletList();
 	private int totalResource_;
 	private static int count = 1000; // number of jobs
 	private static int totalNumberOfHost = 5000; // total number of hosts
@@ -42,7 +42,6 @@ class RunningMasterSlaves extends GridSim{
 			throws Exception {
 		super(name, baud_rate);
 		this.totalResource_ = total_resource;
-		this.receiveList_ = new GridletList();
 
 		// Gets an ID for this entity wich will be the master.
 		this.ID_ = new Integer( getEntityId(name) );
@@ -50,7 +49,7 @@ class RunningMasterSlaves extends GridSim{
 		//        name + ", and id = " + this.ID_);
 		// Creates a list of Gridlets or Tasks for this grid user
 		this.list_ = createGridlets( this.ID_.intValue());
-		//System.out.println("Creating " + this.list_.size() + " Gridlets");
+		System.out.println("Creating " + this.list_.size() + " Gridlets");
 	}
 
 	/**
@@ -58,27 +57,28 @@ class RunningMasterSlaves extends GridSim{
 	 */
 	public void body()
 	{
-		int resourceID[] = new int[this.totalResource_];
+		int resourceID[] = null;
 
-		LinkedList resList;
 
-		// wait until all resource register themselves to the system
-		while (true) {
+		// wait until all resources register themselves to the system, and get their ID
+		
+		while (resourceID == null) {
 			super.gridSimHold(1.); // hold by one (simulated) second 
 
-			resList = super.getGridResourceList();
-			if (resList.size() == this.totalResource_)
+			LinkedList resList = super.getGridResourceList();
+			if (resList.size() == this.totalResource_) {
+				// get their ID and proceed
+				resourceID = new int[this.totalResource_];
+				for (int i = 0; i < this.totalResource_; i++) 
+					resourceID[i] = ( (Integer)resList.get(i) ).intValue();
 				break;
-			else
+				
+			} else 
 				System.out.println(GridSim.clock()+": Some grid resources are not registered yet. Hold on...");
 		}
 
-		// a loop to get all the resources available
-		for (int i = 0; i < this.totalResource_; i++) 
-			resourceID[i] = ( (Integer)resList.get(i) ).intValue();
 
-		// a loop to get one Gridlet at one time and sends it to a random grid
-		// resource entity. Then waits for a reply
+		// Send the gridlet to random grid resources and wait for replies
 		Random random = new Random();
 		for (int i = 0; i < this.list_.size(); i++)
 		{
@@ -93,11 +93,8 @@ class RunningMasterSlaves extends GridSim{
 			//super.send(resourceID[id], GridSimTags.SCHEDULE_NOW,
 			//      GridSimTags.GRIDLET_SUBMIT, gridlet);
 
-			// waiting to receive a Gridlet back from resource entity after completion
-			gridlet = super.gridletReceive();
-
-			// stores the received Gridlet into a new GridletList object
-			this.receiveList_.add(gridlet);
+			// waiting to receive a Gridlet back from resource entity after completion, and store it
+			this.receiveList_.add( gridletReceive() );
 		}
 		System.out.println(GridSim.clock()+": I'm done here. I received "+receiveList_.size()+" gridlets back.");
 
@@ -106,14 +103,6 @@ class RunningMasterSlaves extends GridSim{
 		super.shutdownGridStatisticsEntity();
 		super.shutdownUserEntity();
 		super.terminateIOEntities();
-	}
-
-	/**
-	 * Gets the list of Gridlets
-	 * @return a list of Gridlets
-	 */
-	public GridletList getGridletList() {
-		return this.receiveList_;
 	}
 
 	/**
@@ -175,16 +164,16 @@ class RunningMasterSlaves extends GridSim{
 			// Initialize the GridSim package
 			GridSim.init(1 /* #user */, Calendar.getInstance(), false /*no trace*/);
 
-			// Second step: Creates one or more GridResource objects
+			// Creates the GridResource objects
 			for (int j = 0; j< totalNumberOfHost; j++) {
 				createdResourceList.add(createGridResource("Resource_"+j));
 			}
 			int total_resource = 3;
 
-			// Third step: Creates the RunningMasterSlaves object
+			// Creates the RunningMasterSlaves object
 			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00, total_resource);
 
-			// Fourth step: Starts the simulation
+			// Run the simulation
 			GridSim.startGridSimulation();
 
 		} catch (OutOfMemoryError e) {
