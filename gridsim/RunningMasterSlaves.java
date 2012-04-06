@@ -59,8 +59,6 @@ class RunningMasterSlaves extends GridSim{
 	public void body()
 	{
 		int resourceID[] = new int[this.totalResource_];
-		double resourceCost[] = new double[this.totalResource_];
-		String resourceName[] = new String[this.totalResource_];
 
 		LinkedList resList;
 		ResourceCharacteristics resChar;
@@ -90,14 +88,6 @@ class RunningMasterSlaves extends GridSim{
 			// objects.
 			resourceID[i] = ( (Integer)resList.get(i) ).intValue();
 
-			// Requests to resource entity to send its characteristics
-			super.send(resourceID[i], GridSimTags.SCHEDULE_NOW,
-					GridSimTags.RESOURCE_CHARACTERISTICS, this.ID_);
-
-			// waiting to get a resource characteristics
-			resChar = (ResourceCharacteristics) super.receiveEventObject();
-			resourceName[i] = resChar.getResourceName();
-			resourceCost[i] = resChar.getCostPerSec();
 
 			/* System.out.println("Received ResourceCharacteristics from " +
                     resourceName[i] + ", with id = " + resourceID[i]);*/
