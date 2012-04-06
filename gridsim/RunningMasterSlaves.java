@@ -261,34 +261,5 @@ class RunningMasterSlaves extends GridSim{
 				new LinkedList()/*Holidays*/);
 	}
 
-	/**
-	 * Prints the Gridlet objects
-	 * @param list  list of Gridlets
-	 */
-	private static void printGridletList(GridletList list)
-	{
-		int size = list.size();
-		Gridlet gridlet;
-
-		String indent = "    ";
-		System.out.println();
-		System.out.println("========== OUTPUT ==========");
-		System.out.println("Gridlet ID" + indent + "STATUS" + indent +
-				"Resource ID" + indent + "Cost");
-
-		for (int i = 0; i < size; i++)
-		{
-			gridlet = (Gridlet) list.get(i);
-			System.out.print(indent + gridlet.getGridletID() + indent
-					+ indent);
-
-			if (gridlet.getGridletStatus() == Gridlet.SUCCESS)
-				System.out.print("SUCCESS");
-
-			System.out.println( indent + indent + gridlet.getResourceID() +
-					indent + indent + gridlet.getProcessingCost() );
-		}
-	}
-
 } // end class
 
