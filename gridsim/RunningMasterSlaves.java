@@ -231,97 +231,34 @@ class RunningMasterSlaves extends GridSim{
 	}
 
 	/**
-	 * Creates one Grid resource. A Grid resource contains one or more
-	 * Machines. Similarly, a Machine contains one or more PEs (Processing
-	 * Elements or CPUs).
-	 * <p>
-	 * In this simple example, we are simulating one Grid resource with three
-	 * Machines that contains one or more PEs.
-	 * @param name  a Grid Resource name
+	 * Creates one Grid resource, composed of a unique machine with no external load.
+	 * 
+	 * @param name  a Grid Resource name (must be unique wrt simjava entities names)
 	 * @return a GridResource object
+	 * @throws Exception 
 	 */
-	private static GridResource createGridResource(String name)
+	private static GridResource createGridResource(String name) throws Exception
 	{
-		/*System.out.println();
-        System.out.println("Starting to create one Grid resource with " +
-                "3 Machines");
-
-        // Here are the steps needed to create a Grid resource:
-        // 1. We need to create an object of MachineList to store one or more
-        //    Machines*/
-		MachineList mList = new MachineList();
-		//System.out.println("Creates a Machine list");
-
-		// 2. Create one Machine with its id, number of PEs and MIPS rating per PE
-		//    In this example, we are using a resource from
-		//    hpc420.hpcc.jp, AIST, Tokyo, Japan
-		//    Note: these data are taken the from GridSim paper, page 25.
-		//          In this example, all PEs has the same MIPS (Millions
-		//          Instruction Per Second) Rating for a Machine.
-		int mipsRating = 377;
-		mList.add( new Machine(0, 4, mipsRating));   // First Machine
-		/*System.out.println("Creates the 1st Machine that has 4 PEs and " +
-                "stores it into the Machine list");*/
-
-		// 3. Repeat the process from 2 if we want to create more Machines
-		//    In this example, the AIST in Japan has 3 Machines with same
-		//    MIPS Rating but different PEs.
-		// NOTE: if you only want to create one Machine for one Grid resource,
-		//       then you could skip this step.
-		//  mList.add( new Machine(1, 4, mipsRating));   // Second Machine
-		/*System.out.println("Creates the 2nd Machine that has 4 PEs and " +
-                "stores it into the Machine list");*/
-
-		//  mList.add( new Machine(2, 2, mipsRating));   // Third Machine
-		/*System.out.println("Creates the 3rd Machine that has 2 PEs and " +
-                "stores it into the Machine list");*/
-
-		// 4. Create a ResourceCharacteristics object that stores the
-		//    properties of a Grid resource: architecture, OS, list of
-		//    Machines, allocation policy: time- or space-shared, time zone
-		//    and its price (G$/PE time unit).
-		String arch = "Sun Ultra";      // system architecture
-		String os = "Solaris";          // operating system
-		double time_zone = 9.0;         // time zone this resource located
-		double cost = 3.0;              // the cost of using this resource
-
-		ResourceCharacteristics resConfig = new ResourceCharacteristics(
-				arch, os, mList, ResourceCharacteristics.TIME_SHARED,
-				time_zone, cost);
-
-		/*System.out.println("Creates the properties of a Grid resource and " +
-                "stores the Machine list");*/
-
-		// 5. Finally, we need to create a GridResource object.
+		int mipsRating = 377; // computation speed
 		double baud_rate = 100.0;           // communication speed
-		long seed = 11L*13*17*19*23+1;
-		double peakLoad = 0.0;       // the resource load during peak hour
-		double offPeakLoad = 0.0;    // the resource load during off-peak hr
-		double holidayLoad = 0.0;    // the resource load during holiday
 
-		// incorporates weekends so the grid resource is on 7 days a week
-		LinkedList Weekends = new LinkedList();
-		Weekends.add(new Integer(Calendar.SATURDAY));
-		Weekends.add(new Integer(Calendar.SUNDAY));
+		MachineList mList = new MachineList();
+		mList.add( new Machine(0, 4, mipsRating));  // The actual processing element
 
-		// incorporates holidays. However, no holidays are set in this example
-		LinkedList Holidays = new LinkedList();
-		GridResource gridRes = null;
-		try
-		{
-			gridRes = new GridResource(name, baud_rate, seed,
-					resConfig, peakLoad, offPeakLoad, holidayLoad, Weekends,
-					Holidays);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		/* 
+		 * it seems impossible to create a grid resource without all this stuff, even 
+		 * if you don't need to model any kind of external load nor price accounting 
+		 */
+		ResourceCharacteristics resConfig = 
+				new ResourceCharacteristics(
+						"Sun Ultra", "Solaris", mList, ResourceCharacteristics.TIME_SHARED,
+						9./*time_zone*/, 3./*cost?*/);
 
-		/*System.out.println("Finally, creates one Grid resource and stores " +
-                "the properties of a Grid resource");
-        System.out.println();*/
-
-		return gridRes;
+		return new GridResource(name, baud_rate, 11L*13*17*19*23+1/*seed*/,
+				resConfig, 
+				0.,0.,0., /* The external load is always 0 for us, ignoring time of day */ 
+				new LinkedList()/*Weekends*/,
+				new LinkedList()/*Holidays*/);
 	}
 
 	/**
