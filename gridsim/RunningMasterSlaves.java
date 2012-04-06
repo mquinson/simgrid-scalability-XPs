@@ -83,10 +83,8 @@ class RunningMasterSlaves extends GridSim{
 				System.out.println("Waiting to get list of resources ...");
 		}
 
-		int i = 0;
-
 		// a loop to get all the resources available
-		for (i = 0; i < this.totalResource_; i++)
+		for (int i = 0; i < this.totalResource_; i++)
 		{
 			// Resource list contains list of resource IDs not grid resource
 			// objects.
@@ -109,17 +107,14 @@ class RunningMasterSlaves extends GridSim{
                     "from " + resourceName[i] + "\"", "");*/
 		}
 
-		Gridlet gridlet;
-
 		// a loop to get one Gridlet at one time and sends it to a random grid
 		// resource entity. Then waits for a reply
 		Random random = new Random();
-		int id = 0;
-		for (i = 0; i < this.list_.size(); i++)
+		for (int i = 0; i < this.list_.size(); i++)
 		{
-			gridlet =  this.list_.get(i);
+			Gridlet gridlet =  this.list_.get(i);
 
-			id = random.nextInt(this.totalResource_);
+			int id = random.nextInt(this.totalResource_);
 
 			// Sends one Gridlet to a grid resource specified in "resourceID"
 			super.gridletSubmit(gridlet, resourceID[id]);
@@ -134,6 +129,7 @@ class RunningMasterSlaves extends GridSim{
 			// stores the received Gridlet into a new GridletList object
 			this.receiveList_.add(gridlet);
 		}
+		System.out.println("I'm done here. I received "+receiveList_.size()+" gridlets back.");
 
 		// shut down all the entities, including GridStatistics entity since
 		// we used it to record certain events.
