@@ -1,7 +1,8 @@
 
 /*
- * Author L.Bobelin
- * Date: October 2011
+ * Author: L.Bobelin (October 2011)
+ * Ahthor: M.Quinson (April 2012)
+ * 
  * Description: A simple program that runs a master that is distributing tasks to some computing nodes
  * on a grid platform. Based on example5 from GridSim 5.2 distro.
  *
@@ -15,17 +16,15 @@ import gridsim.*;
  * entities
  */
 class RunningMasterSlaves extends GridSim{
-	private GridletList list_;
+	private GridletList sendList;
 	private GridletList receiveList_= new GridletList();
 	private static int totalNumberOfHost = 5000; // total number of hosts
-	private static Vector<GridResource> createdResourceList = new Vector<GridResource>();
 
 
 	/**
 	 * Allocates a new RunningMasterSlaves object
 	 * @param name  the Entity name of this object
 	 * @param baud_rate     the communication speed
-	 * @param total_resource    the number of grid resources available
 	 * @throws Exception This happens when creating this entity before
 	 *                   initializing GridSim package or the entity name is
 	 *                   <tt>null</tt> or empty
@@ -39,9 +38,30 @@ class RunningMasterSlaves extends GridSim{
 		int id = getEntityId(name);
 		//System.out.println("Creating a master entity with name = " +
 		//        name + ", and id = " + this.ID_);
+		
 		// Creates a list of Gridlets or Tasks for this grid user
-		this.list_ = createGridlets( id ,jobCount, jobSize,fileSize, outputSize);
-		System.out.println("Created " + this.list_.size() + " Gridlets");
+		// Creates a container to store Gridlets
+		sendList = new GridletList();
+
+		// sets the PE MIPS Rating
+		GridSimStandardPE.setRating(100);
+
+		// Create jobs
+		for (int i = 1; i < jobCount+1; i++) {
+			// the Gridlet length setted by user
+			double length = GridSimStandardPE.toMIs(jobSize);
+
+			// creates a new Gridlet object
+			Gridlet gridlet = new Gridlet(/*id, make it in [id+1,id+N] even if I've no idea what it is good for*/ i+id,
+					length, fileSize, outputSize);
+
+			gridlet.setUserID(id);
+
+			// add the Gridlet into a list
+			sendList.add(gridlet);
+		}
+
+		System.out.println("Created " + this.sendList.size() + " Gridlets");
 	}
 
 	/**
@@ -65,16 +85,16 @@ class RunningMasterSlaves extends GridSim{
 					resourceID[i] = ( (Integer)resList.get(i) ).intValue();
 				break;
 				
-			} else 
+			} else // not ready yet
 				System.out.println(GridSim.clock()+": Some grid resources are not registered yet. Hold on...");
 		}
 
 
 		// Send the gridlet to random grid resources and wait for replies
 		Random random = new Random();
-		for (int i = 0; i < this.list_.size(); i++)
+		for (int i = 0; i < this.sendList.size(); i++)
 		{
-			Gridlet gridlet =  this.list_.get(i);
+			Gridlet gridlet =  this.sendList.get(i);
 
 			int id = random.nextInt(totalNumberOfHost);
 
@@ -86,49 +106,15 @@ class RunningMasterSlaves extends GridSim{
 			//      GridSimTags.GRIDLET_SUBMIT, gridlet);
 
 			// waiting to receive a Gridlet back from resource entity after completion, and store it
-			this.receiveList_.add( gridletReceive() );
+			receiveList_.add( gridletReceive() );
 		}
 		System.out.println(GridSim.clock()+": I'm done here. I received "+receiveList_.size()+" gridlets back.");
 
-		// shut down all the entities, including GridStatistics entity since
-		// we used it to record certain events.
-		super.shutdownGridStatisticsEntity();
-		super.shutdownUserEntity();
-		super.terminateIOEntities();
+		// shut down all the entities
+		shutdownGridStatisticsEntity();
+		shutdownUserEntity();
+		terminateIOEntities();
 	}
-
-	/**
-	 * This method will show you how to create Gridlets with and without
-	 * GridSimRandom class.
-	 * @param userID    the entity ID that owns these Gridlets. 
-	 * @return a GridletList object
-	 */
-	private GridletList createGridlets(int idOffset, int jobCount, int jobSize,int fileSize, int outputSize) {
-		// Creates a container to store Gridlets
-		GridletList list = new GridletList();
-
-		// sets the PE MIPS Rating
-		GridSimStandardPE.setRating(100);
-
-		// Create jobs
-		for (int i = 1; i < jobCount+1; i++)
-		{
-			// the Gridlet length setted by user
-			double length = GridSimStandardPE.toMIs(jobSize);
-
-			// creates a new Gridlet object
-			Gridlet gridlet = new Gridlet(/*id, make it in [id+1,id+N] even if I've no idea what it is good for*/ i+idOffset,
-					length, fileSize, outputSize);
-
-			gridlet.setUserID(idOffset);
-
-			// add the Gridlet into a list
-			list.add(gridlet);
-		}
-
-		return list;
-	}
-
 
 	////////////////////////// STATIC METHODS ///////////////////////
 
@@ -136,6 +122,8 @@ class RunningMasterSlaves extends GridSim{
 	 * Creates main() to run this example
 	 */
 	public static void main(String[] args) throws Exception	{
+		Vector<GridResource> createdResourceList = new Vector<GridResource>();
+				
 		if (args.length!= 5) {
 			System.out.println("Wrong number of args. Usage : number of jobs, job size, number of hosts, input file size for job, output file size for job");
 			System.exit(1);
