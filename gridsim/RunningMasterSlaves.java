@@ -16,9 +16,9 @@ import gridsim.*;
  * entities
  */
 class RunningMasterSlaves extends GridSim{
-	private GridletList sendList;
+	private GridletList sendList = new GridletList();
 	private GridletList receiveList_= new GridletList();
-	private static int totalNumberOfHost = 5000; // total number of hosts
+	private int totalNumberOfHost; 
 
 
 	/**
@@ -31,19 +31,14 @@ class RunningMasterSlaves extends GridSim{
 	 * @see gridsim.GridSim#Init(int, Calendar, boolean, String[], String[],
 	 *          String)
 	 */
-	RunningMasterSlaves(String name, double baud_rate, 
+	RunningMasterSlaves(String name, double baud_rate, int totalNumberOfHost, 
 			int jobCount, int jobSize,int fileSize, int outputSize) throws Exception {
 		super(name, baud_rate);
 
-		int id = getEntityId(name);
-		//System.out.println("Creating a master entity with name = " +
-		//        name + ", and id = " + this.ID_);
+		this.totalNumberOfHost = totalNumberOfHost;
 		
 		// Creates a list of Gridlets or Tasks for this grid user
-		// Creates a container to store Gridlets
-		sendList = new GridletList();
-
-		// sets the PE MIPS Rating
+		int id = getEntityId(name);
 		GridSimStandardPE.setRating(100);
 
 		// Create jobs
@@ -130,7 +125,7 @@ class RunningMasterSlaves extends GridSim{
 		}
 		int jobCount = Integer.valueOf(args[0]).intValue();
 		int jobSize = Integer.valueOf(args[1]).intValue();
-		totalNumberOfHost = Integer.valueOf(args[2]).intValue();
+		int totalNumberOfHost = Integer.valueOf(args[2]).intValue();
 		int fileSize = Integer.valueOf(args[3]).intValue();
 		int outputSize = Integer.valueOf(args[4]).intValue();
 		System.out.println("#jobs:" + jobCount + " #jobSize:" + jobSize +" #hosts:" + totalNumberOfHost + " #inputSize:" + fileSize + " #outputSize:" + outputSize);
@@ -145,7 +140,8 @@ class RunningMasterSlaves extends GridSim{
 			}
 
 			// Creates the RunningMasterSlaves object
-			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00,  jobCount, jobSize,fileSize, outputSize);
+			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00,  
+					totalNumberOfHost, jobCount, jobSize,fileSize, outputSize);
 
 			// Run the simulation
 			GridSim.startGridSimulation();
@@ -154,9 +150,6 @@ class RunningMasterSlaves extends GridSim{
 			System.err.println("Out of memory");
 			System.exit(1);
 		}
-
-
-
 	}
 
 	/**
