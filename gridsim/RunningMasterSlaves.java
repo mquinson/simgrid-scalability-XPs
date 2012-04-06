@@ -19,7 +19,6 @@ class RunningMasterSlaves extends GridSim{
 	private GridletList list_;
 	private GridletList receiveList_= new GridletList();
 	private int totalResource_;
-	private static int count = 1000; // number of jobs
 	private static int totalNumberOfHost = 5000; // total number of hosts
 	private static int fileSize = 5000; // total number of hosts
 	private static int outputSize = 1000 ; // default job size
@@ -37,8 +36,8 @@ class RunningMasterSlaves extends GridSim{
 	 * @see gridsim.GridSim#Init(int, Calendar, boolean, String[], String[],
 	 *          String)
 	 */
-	RunningMasterSlaves(String name, double baud_rate, int total_resource,int jobSize)
-			throws Exception {
+	RunningMasterSlaves(String name, double baud_rate, int total_resource,
+			int jobCount, int jobSize) throws Exception {
 		super(name, baud_rate);
 		this.totalResource_ = total_resource;
 
@@ -47,7 +46,7 @@ class RunningMasterSlaves extends GridSim{
 		//System.out.println("Creating a master entity with name = " +
 		//        name + ", and id = " + this.ID_);
 		// Creates a list of Gridlets or Tasks for this grid user
-		this.list_ = createGridlets( this.ID_.intValue(),jobSize);
+		this.list_ = createGridlets( this.ID_.intValue(),jobCount, jobSize);
 		System.out.println("Creating " + this.list_.size() + " Gridlets");
 	}
 
@@ -110,7 +109,7 @@ class RunningMasterSlaves extends GridSim{
 	 * @param userID    the user entity ID that owns these Gridlets
 	 * @return a GridletList object
 	 */
-	private GridletList createGridlets(int userID, int jobSize) {
+	private GridletList createGridlets(int userID, int jobCount, int jobSize) {
 		// Creates a container to store Gridlets
 		GridletList list = new GridletList();
 
@@ -118,7 +117,7 @@ class RunningMasterSlaves extends GridSim{
 		GridSimStandardPE.setRating(100);
 
 		// Create jobs
-		for (int i = 1; i < count+1; i++)
+		for (int i = 1; i < jobCount+1; i++)
 		{
 			// the Gridlet length setted by user
 			double length = GridSimStandardPE.toMIs(jobSize);
@@ -147,12 +146,12 @@ class RunningMasterSlaves extends GridSim{
 			System.out.println("Wrong number of args. Usage : number of jobs, job size, number of hosts, input file size for job, output file size for job");
 			System.exit(1);
 		}
-		count = Integer.valueOf(args[0]).intValue();
+		int jobCount = Integer.valueOf(args[0]).intValue();
 		int jobSize = Integer.valueOf(args[1]).intValue();
 		totalNumberOfHost = Integer.valueOf(args[2]).intValue();
 		fileSize = Integer.valueOf(args[3]).intValue();
 		outputSize = Integer.valueOf(args[4]).intValue();
-		System.out.println("#jobs:" + count + " #jobSize:" + jobSize +" #hosts:" + totalNumberOfHost + " #inputSize:" + fileSize + " #outputSize:" + outputSize);
+		System.out.println("#jobs:" + jobCount + " #jobSize:" + jobSize +" #hosts:" + totalNumberOfHost + " #inputSize:" + fileSize + " #outputSize:" + outputSize);
 
 		try  {	    
 			// Initialize the GridSim package
@@ -165,7 +164,7 @@ class RunningMasterSlaves extends GridSim{
 			int total_resource = 3;
 
 			// Creates the RunningMasterSlaves object
-			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00, total_resource, jobSize);
+			RunningMasterSlaves obj = new RunningMasterSlaves("RunningMasterSlaves", 560.00, total_resource, jobCount, jobSize);
 
 			// Run the simulation
 			GridSim.startGridSimulation();
