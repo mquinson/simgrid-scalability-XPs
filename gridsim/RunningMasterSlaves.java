@@ -14,10 +14,8 @@ import gridsim.*;
  * RunningMasterSlaves class creates Gridlets and sends them to many grid resource
  * entities
  */
-class RunningMasterSlaves extends GridSim
-{
+class RunningMasterSlaves extends GridSim{
 	private Integer ID_;
-	private String name_;
 	private GridletList list_;
 	private GridletList receiveList_;
 	private int totalResource_;
@@ -41,10 +39,8 @@ class RunningMasterSlaves extends GridSim
 	 *          String)
 	 */
 	RunningMasterSlaves(String name, double baud_rate, int total_resource)
-			throws Exception
-			{
+			throws Exception {
 		super(name, baud_rate);
-		this.name_ = name;
 		this.totalResource_ = total_resource;
 		this.receiveList_ = new GridletList();
 
@@ -55,7 +51,7 @@ class RunningMasterSlaves extends GridSim
 		// Creates a list of Gridlets or Tasks for this grid user
 		this.list_ = createGridlets( this.ID_.intValue());
 		//System.out.println("Creating " + this.list_.size() + " Gridlets");
-			}
+	}
 
 	/**
 	 * Master's core work.
@@ -136,17 +132,8 @@ class RunningMasterSlaves extends GridSim
 			//super.send(resourceID[id], GridSimTags.SCHEDULE_NOW,
 			//      GridSimTags.GRIDLET_SUBMIT, gridlet);
 
-			// Recods this event into "stat.txt" file for statistical purposes
-			/*super.recordStatistics("\"Submit " + info + " to " +
-                    resourceName[id] + "\"", "");*/
-
-			// waiting to receive a Gridlet back from resource entity
+			// waiting to receive a Gridlet back from resource entity after completion
 			gridlet = super.gridletReceive();
-			//System.out.println("Receiving Gridlet " + gridlet.getGridletID());
-
-			// Recods this event into "stat.txt" file for statistical purposes
-			/*super.recordStatistics("\"Received " + info +  " from " +
-                    resourceName[id] + "\"", gridlet.getProcessingCost());*/
 
 			// stores the received Gridlet into a new GridletList object
 			this.receiveList_.add(gridlet);
@@ -215,14 +202,8 @@ class RunningMasterSlaves extends GridSim
 	/**
 	 * Creates main() to run this example
 	 */
-	public static void main(String[] args) throws Exception
-	/* private static int count = 1000; // number of jobs
-    private static int totalNumberOfHost = 5000; // total number of hosts
-   private static int jobSize = 1000 ; // default job size   */
-
-	{
-		if (args.length!= 5)
-		{
+	public static void main(String[] args) throws Exception	{
+		if (args.length!= 5) {
 			System.out.println("Wrong number of args. Usage : number of jobs, job size, number of hosts, input file size for job, output file size for job");
 			System.exit(1);
 		}
@@ -233,34 +214,12 @@ class RunningMasterSlaves extends GridSim
 		outputSize = Integer.valueOf(args[4]).intValue();
 		System.out.println("#jobs:" + count + " #jobSize:" + jobSize +" #hosts:" + totalNumberOfHost + " #inputSize:" + fileSize + " #outputSize:" + outputSize);
 
-		try 
-		{	    
-			// First step: Initialize the GridSim package. It should be called
-			// before creating any entities. We can't run this example without
-			// initializing GridSim first. We will get run-time exception
-			// error.
-			int num_user = 1;   // number of grid users
-			Calendar calendar = Calendar.getInstance();
-			boolean trace_flag = false;  // mean don't trace GridSim events
-
-			// list of files or processing names to be excluded from any
-			// statistical measures
-			String[] exclude_from_file = { "" };
-			String[] exclude_from_processing = { "" };
-
-			// the name of a report file to be written. We don't want to write
-			// anything here. See other examples of using the ReportWriter
-			// class
-			String report_name = null;
-
+		try  {	    
 			// Initialize the GridSim package
-			//System.out.println("Initializing GridSim package");
-			GridSim.init(num_user, calendar, trace_flag, exclude_from_file,
-					exclude_from_processing, report_name);
+			GridSim.init(1 /* #user */, Calendar.getInstance(), false /*no trace*/);
 
 			// Second step: Creates one or more GridResource objects
-			for (int j = 0; j< totalNumberOfHost; j++)
-			{
+			for (int j = 0; j< totalNumberOfHost; j++) {
 				createdResourceList.add(createGridResource("Resource_"+j));
 			}
 			int total_resource = 3;
@@ -271,11 +230,6 @@ class RunningMasterSlaves extends GridSim
 			// Fourth step: Starts the simulation
 			GridSim.startGridSimulation();
 
-			// Final step: Prints the Gridlets when simulation is over
-			/*GridletList newList = obj.getGridletList();
-            printGridletList(newList);*/
-
-			//System.out.println("Runnin master/slave finished");
 		} catch (OutOfMemoryError e) {
 			System.err.println("Out of memory");
 			System.exit(1);
