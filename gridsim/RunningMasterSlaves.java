@@ -110,7 +110,6 @@ class RunningMasterSlaves extends GridSim{
 		}
 
 		Gridlet gridlet;
-		String info;
 
 		// a loop to get one Gridlet at one time and sends it to a random grid
 		// resource entity. Then waits for a reply
@@ -119,11 +118,8 @@ class RunningMasterSlaves extends GridSim{
 		for (i = 0; i < this.list_.size(); i++)
 		{
 			gridlet =  this.list_.get(i);
-			info = "Gridlet_" + gridlet.getGridletID();
 
 			id = random.nextInt(this.totalResource_);
-			/*System.out.println("Sending " + info + " to " + resourceName[id] +
-                    " with id = " + resourceID[id]);*/
 
 			// Sends one Gridlet to a grid resource specified in "resourceID"
 			super.gridletSubmit(gridlet, resourceID[id]);
@@ -167,11 +163,6 @@ class RunningMasterSlaves extends GridSim{
 
 		int id = 0;
 		double length = 3500.0;
-
-		// We create 5 Gridlets with the help of GridSimRandom and
-		// GriSimStandardPE class
-		long seed = 11L*13*17*19*23+1;
-		Random random = new Random(seed);
 
 		// sets the PE MIPS Rating
 		GridSimStandardPE.setRating(100);
