@@ -61,41 +61,21 @@ class RunningMasterSlaves extends GridSim{
 		int resourceID[] = new int[this.totalResource_];
 
 		LinkedList resList;
-		ResourceCharacteristics resChar;
 
-		// waiting to get list of resources. Since GridSim package uses
-		// multi-threaded environment, your request might arrive earlier
-		// before one or more grid resource entities manage to register
-		// themselves to GridInformationService (GIS) entity.
-		// Therefore, it's better to wait in the first place
-		while (true)
-		{
-			// need to pause for a while to wait GridResources finish
-			// registering to GIS
-			super.gridSimHold(1.0);    // hold by 1 second (simulation time, not real one, so it does not count on profiling)
+		// wait until all resource register themselves to the system
+		while (true) {
+			super.gridSimHold(1.); // hold by one (simulated) second 
 
 			resList = super.getGridResourceList();
 			if (resList.size() == this.totalResource_)
 				break;
 			else
-				System.out.println("Waiting to get list of resources ...");
+				System.out.println(GridSim.clock()+": Some grid resources are not registered yet. Hold on...");
 		}
 
 		// a loop to get all the resources available
-		for (int i = 0; i < this.totalResource_; i++)
-		{
-			// Resource list contains list of resource IDs not grid resource
-			// objects.
+		for (int i = 0; i < this.totalResource_; i++) 
 			resourceID[i] = ( (Integer)resList.get(i) ).intValue();
-
-
-			/* System.out.println("Received ResourceCharacteristics from " +
-                    resourceName[i] + ", with id = " + resourceID[i]);*/
-
-			// record this event into "stat.txt" file
-			/* super.recordStatistics("\"Received ResourceCharacteristics " +
-                    "from " + resourceName[i] + "\"", "");*/
-		}
 
 		// a loop to get one Gridlet at one time and sends it to a random grid
 		// resource entity. Then waits for a reply
@@ -119,7 +99,7 @@ class RunningMasterSlaves extends GridSim{
 			// stores the received Gridlet into a new GridletList object
 			this.receiveList_.add(gridlet);
 		}
-		System.out.println("I'm done here. I received "+receiveList_.size()+" gridlets back.");
+		System.out.println(GridSim.clock()+": I'm done here. I received "+receiveList_.size()+" gridlets back.");
 
 		// shut down all the entities, including GridStatistics entity since
 		// we used it to record certain events.
