@@ -12,6 +12,6 @@ for size in  1000000 ; do
   sed "s/THESIZE/$size/" example.cfg > theconfig
   echo -n "XXXXXXXXXXXXXX size: "
   grep "^SIZE" theconfig
-  /usr/bin/time java -cp `find -L lib/ -name "*.jar" | tr [:space:] :`:"":classes peersim.Simulator theconfig
+  /usr/bin/time java -cp `ls ../*.jar | tr [:space:] :`:"":classes peersim.Simulator theconfig
 
 done
