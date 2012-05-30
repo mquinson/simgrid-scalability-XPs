@@ -9,7 +9,7 @@ class SimgridScalability < Grid5000::Campaign::Engine
   set :walltime, 3600
   set :notifications, ["xmpp:#{ENV['USER']}@jabber.grid5000.fr"]
   set :site, "nancy"
-  set :name, "SGScalab."
+  set :name, "SG::Scalab"
   set :no_cleanup, true
   set :no_cancel, true
 
@@ -29,9 +29,22 @@ class SimgridScalability < Grid5000::Campaign::Engine
     env
   end
 
+  after :install! do |env, *args|
+    logger.info "[#{env[:site]}] Prepare nodes for experiments..."
+    env[:nodes].each do |node|
+      ssh(node, "root",:timeout => 10) do |ssh|
+        out = ssh.exec!("swapoff -av")
+        logger.debug out
+      end
+    end
+    env
+  end
+
   on :execute! do |env, *args|
+    xp = "gridsim"
+    logger.info "[#{env[:site]}] Launch #{xp} experiment..."
     ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
-      cmd = %Q{hostname -f}
+      cmd = %Q{cd simgrid-scalability-XPs/gridsim-masterslave; ./testall.sh 2>&1 |cat >> ../logs/gridsim.`date +%y%m%d`.`hostname`}
       logger.info "[#{env[:site]}] Executing command: #{cmd}"
       ssh.exec(cmd)
       ssh.loop
