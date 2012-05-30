@@ -11,7 +11,7 @@ maxfileOUTsize=1000000
 
 function roll() {
   max=$1
-  rand=`dd if=/dev/urandom count=1 2> /dev/null | cksum | cut -f1 -d" "`  
+  rand=`dd if=/dev/urandom count=1 2> /dev/null | cksum | cut -f1 -d" "`
   res=`expr $rand % $max`
   echo $res
 }
@@ -31,7 +31,7 @@ for i in `seq 1 1000` ; do
 
   killall -KILL java 2>/dev/null
   # Wrong number of args. Usage : number of jobs, job size, number of hosts, input file size for job, output file size for job
-  /usr/bin/time -f "$timefmt" -o $me.timings  java -Xmx46g -cp gridSim.jar:lib/simjava2.jar:. RunningMasterSlaves  $task $jobsize $slave $infilesize $outfilesize 
+  /usr/bin/time -f "$timefmt" -o $me.timings  java -Xmx46g -cp gridSim.jar:lib/simjava2.jar:. RunningMasterSlaves  $task $jobsize $slave $infilesize $outfilesize
 
   if grep "Command terminated by signal" $me.timings ; then
     echo "Damn, error detected:"
@@ -45,8 +45,4 @@ for i in `seq 1 1000` ; do
   cat $me.timings
 
   killall java 2>/dev/null
-  done
-  done
-done
-done
 done
