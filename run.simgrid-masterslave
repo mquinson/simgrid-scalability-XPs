@@ -1,4 +1,4 @@
 #! /bin/bash
 
-cd /home/mquinson/precious.git/simgrid-masterslave
-./test_scalability.sh 2>&1 |cat >> ~/precious.git/logs/simgrid-masterslave.output.`date +%y%m%d`.`hostname`
+cd /home/mquinson/simgrid-scalability-XPs.git/simgrid-masterslave
+./test_scalability.sh 2>&1 |cat >> ~/simgrid-scalability-XPs.git/logs/simgrid-masterslave.output.`date +%y%m%d`.`hostname`
