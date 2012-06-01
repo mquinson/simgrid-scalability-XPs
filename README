@@ -1,4 +1,4 @@
 = SimGrid Scalability =
 
 == Launch gridsim ==
-g5k-campaign -i g5k-scalab/sg-scalability.rb
+cd g5k-scalab; g5k-campaign -i sg-scalability.rb

@@ -76,7 +76,6 @@ class SimgridScalability < Grid5000::Campaign::Engine
     $scalab.each_pair do |xp,cmd|
       logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment..."
       ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
-        #cmd = %Q{cd simgrid-scalability-XPs/gridsim-masterslave; ./testall.sh 2>&1 |cat >> ../logs/gridsim.`date +%y%m%d`.`hostname`}
         logger.info "[#{env[:site]}] Executing command: #{cmd}"
         ssh.exec(cmd)
         ssh.loop
