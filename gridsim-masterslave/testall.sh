@@ -1,6 +1,7 @@
 #! /bin/bash
 
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
+[[ ! -d tmp ]] && mkdir tmp
 me=tmp/`hostname -s`
 
 maxtasks=500000

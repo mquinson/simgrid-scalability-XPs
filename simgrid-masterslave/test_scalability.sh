@@ -4,7 +4,7 @@ test_to_run=v37_raw
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 maxslaves=200000
 maxtasks=1000000
-
+[[ ! -d tmp ]] && mkdir tmp
 me=tmp/`hostname -s`
 cmd=""
 logs=/dev/null
@@ -48,7 +48,7 @@ function cmdline_setup() {
    *) echo "Cannot parse the argument '$arg'"; exit 1;
   esac
 
-  logs="/home/mquinson/simgrid-scalability-XPs.git/logs/simgrid-masterslave.$id."`date +%y%m%d`.`hostname`
+  logs="/home/$USER/simgrid-scalability-XPs/logs/simgrid-masterslave.$id."`date +%y%m%d`.`hostname`
 }
 
 function dolog() {
