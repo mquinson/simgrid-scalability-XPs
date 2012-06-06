@@ -38,12 +38,12 @@ class SimgridScalability < Grid5000::Campaign::Engine
   set :environment, "squeeze-x64-nfs"
   set :resources, "nodes=1"
   set :properties, "cluster='graphene'"
-  set :walltime, 3600
+  set :walltime, 36000
   set :notifications, ["xmpp:#{ENV['USER']}@jabber.grid5000.fr"]
   set :site, "nancy"
   set :name, "SG::Scalab"
-  set :no_cleanup, true
-  set :no_cancel, true
+  #set :no_cleanup, true
+  #set :no_cancel, true
 
   after :deployment! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Nodes have been deployed: #{env[:nodes].inspect}"
