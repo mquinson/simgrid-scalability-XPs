@@ -144,5 +144,3 @@ else
   dolog "Current test: slave:$slave task:$task"
   runit
 fi
-
-done
