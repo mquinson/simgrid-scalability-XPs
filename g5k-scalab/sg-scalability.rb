@@ -75,6 +75,18 @@ class SimgridScalability < Grid5000::Campaign::Engine
     env
   end
 
+  on :install! do |env, *args|
+    #TODO on suppose que last est deja compile
+    Dir.chdir('simgrid')
+    last = %x{git log --pretty=format:%h -1}
+    if !Dir.exist?("~/sg-#{last}")
+      Dir.mkdir("~/sg-#{last}")
+      logger.info "[#{env[:site]}](#{time_elapsed}) Compiling simgrid..."
+      %x{cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{last} -Denable_smpi=off ./;make;make install}
+    end
+    env
+  end
+
   after :install! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Prepare nodes for experiments..."
     env[:nodes].each do |node|
