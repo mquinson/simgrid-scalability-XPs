@@ -44,20 +44,6 @@ class SimgridScalability < Grid5000::Campaign::Engine
   #set :no_cleanup, true
   #set :no_cancel, true
 
-  before :deplyment! do |env, *args|
-    # FIXME deployment
-    Dir.chdir('~')
-    if Dir.exist?('simgrid')
-      logger.info "[#{env[:site]}](#{time_elapsed}) Update simgrid repository"
-      Dir.chdir('simgrid')
-      %x{https_proxy='http://proxy:3128' git pull}
-    else
-      logger.info "[#{env[:site]}](#{time_elapsed}) Clone simgrid from gforge"
-      %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
-    end
-    env
-  end
-
   after :deployment! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Nodes have been deployed: #{env[:nodes].inspect}"
     env
@@ -75,24 +61,25 @@ class SimgridScalability < Grid5000::Campaign::Engine
   end
 
   on :install! do |env, *args|
+    # FIXME deployment
+    Dir.chdir("/home/#{ENV['USER']}")
+    if File.directory?('simgrid')
+      Dir.chdir('simgrid')
+      puts "update"
+      %x{https_proxy='http://proxy:3128' git pull}
+    else
+      puts "clone"
+      %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
+    end
+
     #TODO on suppose que last est deja compile
     Dir.chdir('simgrid')
     last = %x{git log --pretty=format:%h -1}
-    if !Dir.exist?("~/sg-#{last}")
-      Dir.mkdir("~/sg-#{last}")
-      logger.info "[#{env[:site]}](#{time_elapsed}) Compiling simgrid..."
+    puts "Last sg (#{last})"
+    if !File.directory?("/home/#{ENV['USER']}/sg-#{last}")
+      Dir.mkdir("/home/#{ENV['USER']}/sg-#{last}")
+      puts "compil"
       %x{cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{last} -Denable_smpi=off ./;make;make install}
-    end
-    env
-  end
-
-  after :install! do |env, *args|
-    logger.info "[#{env[:site]}](#{time_elapsed}) Prepare nodes for experiments..."
-    env[:nodes].each do |node|
-      ssh(node, "root",:timeout => 10) do |ssh|
-        out = ssh.exec!("swapoff -av")
-        logger.debug out
-      end
     end
     env
   end
