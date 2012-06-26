@@ -45,12 +45,26 @@ class SimgridScalability < Grid5000::Campaign::Engine
   #set :no_cleanup, true
   #set :no_cancel, true
 
+  before :deplyment! do |env, *args|
+    # FIXME deployment
+    Dir.chdir('~')
+    if Dir.exist?('simgrid')
+      logger.info "[#{env[:site]}](#{time_elapsed}) Update simgrid repository"
+      Dir.chdir('simgrid')
+      %x{https_proxy='http://proxy:3128' git pull}
+    else
+      logger.info "[#{env[:site]}](#{time_elapsed}) Clone simgrid from gforge"
+      %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
+    end
+    env
+  end
+
   after :deployment! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Nodes have been deployed: #{env[:nodes].inspect}"
     env
   end
 
-  on :install! do |env, *args|
+  before :install! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Installing additional software on the nodes..."
     env[:nodes].each do |node|
       ssh(node, "root",:timeout => 10) do |ssh|
