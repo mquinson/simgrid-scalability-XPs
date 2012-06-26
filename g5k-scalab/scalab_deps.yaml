@@ -1,0 +1,4 @@
+---
+gridsim: "cd simgrid-scalability-XPs/gridsim-masterslave; ./testall.sh 2>&1 |cat >> ../logs/gridsim.`date +%y%m%d`.`hostname`"
+simgrid-masterslave: "cd simgrid-scalability-XPs/simgrid-masterslave; ./test_scalability.sh 2>&1 |cat >> ../logs/simgrid-masterslave.output.`date +%y%m%d`.`hostname`"
+simgrid-goal: "cd simgrid-scalability-XPs/simgrid-goal; ./testall.sh 2>&1 |cat >> ../logs/simgrid-goal.`date +%y%m%d`.`hostname`"

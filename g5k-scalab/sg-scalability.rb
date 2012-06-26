@@ -28,7 +28,6 @@ require 'yaml'
 require 'optparse'
 
 $tlaunch = Time::now
-$scalab = YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml")))
 
 def time_elapsed
   return (Time::now - $tlaunch).to_i
@@ -99,8 +98,16 @@ class SimgridScalability < Grid5000::Campaign::Engine
   end
 
   on :execute! do |env, *args|
-    $scalab.each_pair do |xp,cmd|
-      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment..."
+    #FIXME
+    #set a specific path for simgrid compil, so dyn replace in expe yml
+    def replace_yaml_tokens(yaml_doc, sgpath)
+      yaml_obj = YAML::dump( yaml_doc )
+      yaml_obj.gsub!(/\@SGPATH\@/, sgpath)
+      YAML::load( yaml_obj )
+    end
+    conf = replace_yaml_tokens(YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml"))),"~/sg-#{last}")
+    conf.each_pair do |xp,cmd|
+      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment #{last}..."
       ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
         logger.info "[#{env[:site]}] Executing command: #{cmd}"
         ssh.exec(cmd)
