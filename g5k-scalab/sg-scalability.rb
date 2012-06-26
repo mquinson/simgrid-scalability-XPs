@@ -62,24 +62,34 @@ class SimgridScalability < Grid5000::Campaign::Engine
 
   on :install! do |env, *args|
     # FIXME deployment
-    Dir.chdir("/home/#{ENV['USER']}")
-    if File.directory?('simgrid')
-      Dir.chdir('simgrid')
-      puts "update"
-      %x{https_proxy='http://proxy:3128' git pull}
-    else
-      puts "clone"
-      %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
+    Dir.chdir("/home/#{ENV['USER']}") do
+      if File.directory?('simgrid')
+        Dir.chdir('simgrid') do
+          puts "update"
+          %x{https_proxy='http://proxy:3128' git pull}
+        end
+      else
+        puts "clone"
+        %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
+      end
     end
 
     #TODO on suppose que last est deja compile
-    Dir.chdir('simgrid')
-    last = %x{git log --pretty=format:%h -1}
-    puts "Last sg (#{last})"
-    if !File.directory?("/home/#{ENV['USER']}/sg-#{last}")
-      Dir.mkdir("/home/#{ENV['USER']}/sg-#{last}")
-      puts "compil"
-      %x{cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{last} -Denable_smpi=off ./;make;make install}
+    Dir.chdir("/home/#{ENV['USER']}/simgrid") do
+      LAST = %x{git log --pretty=format:%h -1}
+      puts "Last sg (#{LAST})"
+      if !File.directory?("/home/#{ENV['USER']}/sg-#{LAST}")
+        Dir.mkdir("/home/#{ENV['USER']}/sg-#{LAST}")
+        puts "compil on node"
+        logger.info "[#{env[:site]}](#{time_elapsed}) Compil on node #{env[:nodes].inspect}..."
+        env[:nodes].each do |node|
+          ssh(node, ENV['USER'],:timeout => 10) do |ssh|
+             out = ssh.exec!("cd ~/simgrid/;cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{LAST} -Denable_smpi=off ./;make;make install")
+             logger.debug out
+          end
+        end
+        logger.info "[#{env[:site]}](#{time_elapsed}) Compil OK on node #{env[:nodes].inspect}..."
+      end
     end
     env
   end
@@ -92,9 +102,9 @@ class SimgridScalability < Grid5000::Campaign::Engine
       yaml_obj.gsub!(/\@SGPATH\@/, sgpath)
       YAML::load( yaml_obj )
     end
-    conf = replace_yaml_tokens(YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml"))),"~/sg-#{last}")
+    conf = replace_yaml_tokens(YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml"))),"~/sg-#{LAST}")
     conf.each_pair do |xp,cmd|
-      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment #{last}..."
+      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment #{LAST}..."
       ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
         logger.info "[#{env[:site]}] Executing command: #{cmd}"
         ssh.exec(cmd)
