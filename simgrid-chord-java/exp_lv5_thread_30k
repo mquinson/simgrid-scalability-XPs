@@ -1,16 +1,17 @@
 #!/bin/bash
-
-bin="java -Xss104k -cp $HOME/workspace/simgrid-java/examples:$HOME/workspace/simgrid-java/simgrid.jar chord/Chord "
+bin="java -Xss160k -cp 
+$HOME/workspace/simgrid-java/examples:$HOME/workspace/simgrid-java/simgrid.jar 
+chord/Chord "
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 me=tmp/`hostname -s`
 
 test -e tmp || mkdir tmp
 
-for size in 10 100 500 1000 5000 10000; do
+for size in 10 100 500 1000 5000 10000 20000 30000; do
  
   echo "$size nodes, network LV08 precision 1e-5"
   cmd="$bin One_cluster_nobb_"$size"_hosts.xml chord$size.xml --cfg=network/model:LV08"
-#  cmd="$cmd --log=root.thres:critical "
+  cmd="$cmd --log=root.thres:critical "
   echo $cmd
   
   /usr/bin/time -f "$timefmt" -o $me.timings $cmd size:$size
