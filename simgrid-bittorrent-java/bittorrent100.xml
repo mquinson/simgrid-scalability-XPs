@@ -1,0 +1,104 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid.dtd">
+<platform version="3">
+  <process host="c-0.me" function="bittorrent.Tracker"><argument value="10000"/></process>
+  <process host="c-1.me" function="bittorrent.Peer"><argument value="5895888" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-2.me" function="bittorrent.Peer"><argument value="7151011" /><argument value="10000" /></process>
+  <process host="c-3.me" function="bittorrent.Peer"><argument value="53390" /><argument value="10000" /></process>
+  <process host="c-4.me" function="bittorrent.Peer"><argument value="1593071" /><argument value="10000" /></process>
+  <process host="c-5.me" function="bittorrent.Peer"><argument value="15342108" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-6.me" function="bittorrent.Peer"><argument value="7967345" /><argument value="10000" /></process>
+  <process host="c-7.me" function="bittorrent.Peer"><argument value="3377162" /><argument value="10000" /></process>
+  <process host="c-8.me" function="bittorrent.Peer"><argument value="3661970" /><argument value="10000" /></process>
+  <process host="c-9.me" function="bittorrent.Peer"><argument value="11001594" /><argument value="10000" /></process>
+  <process host="c-10.me" function="bittorrent.Peer"><argument value="10473485" /><argument value="10000" /></process>
+  <process host="c-11.me" function="bittorrent.Peer"><argument value="12534724" /><argument value="10000" /></process>
+  <process host="c-12.me" function="bittorrent.Peer"><argument value="779440" /><argument value="10000" /></process>
+  <process host="c-13.me" function="bittorrent.Peer"><argument value="795710" /><argument value="10000" /></process>
+  <process host="c-14.me" function="bittorrent.Peer"><argument value="9187133" /><argument value="10000" /></process>
+  <process host="c-15.me" function="bittorrent.Peer"><argument value="13185228" /><argument value="10000" /></process>
+  <process host="c-16.me" function="bittorrent.Peer"><argument value="13204243" /><argument value="10000" /></process>
+  <process host="c-17.me" function="bittorrent.Peer"><argument value="5026944" /><argument value="10000" /></process>
+  <process host="c-18.me" function="bittorrent.Peer"><argument value="8624219" /><argument value="10000" /></process>
+  <process host="c-19.me" function="bittorrent.Peer"><argument value="3752835" /><argument value="10000" /></process>
+  <process host="c-20.me" function="bittorrent.Peer"><argument value="1857078" /><argument value="10000" /></process>
+  <process host="c-21.me" function="bittorrent.Peer"><argument value="12988542" /><argument value="10000" /></process>
+  <process host="c-22.me" function="bittorrent.Peer"><argument value="12184709" /><argument value="10000" /></process>
+  <process host="c-23.me" function="bittorrent.Peer"><argument value="2926050" /><argument value="10000" /></process>
+  <process host="c-24.me" function="bittorrent.Peer"><argument value="3917372" /><argument value="10000" /></process>
+  <process host="c-25.me" function="bittorrent.Peer"><argument value="16468646" /><argument value="10000" /></process>
+  <process host="c-26.me" function="bittorrent.Peer"><argument value="8455144" /><argument value="10000" /></process>
+  <process host="c-27.me" function="bittorrent.Peer"><argument value="5883747" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-28.me" function="bittorrent.Peer"><argument value="4640663" /><argument value="10000" /></process>
+  <process host="c-29.me" function="bittorrent.Peer"><argument value="12034511" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-30.me" function="bittorrent.Peer"><argument value="12628" /><argument value="10000" /></process>
+  <process host="c-31.me" function="bittorrent.Peer"><argument value="2218019" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-32.me" function="bittorrent.Peer"><argument value="10327968" /><argument value="10000" /></process>
+  <process host="c-33.me" function="bittorrent.Peer"><argument value="9031252" /><argument value="10000" /></process>
+  <process host="c-34.me" function="bittorrent.Peer"><argument value="8241960" /><argument value="10000" /></process>
+  <process host="c-35.me" function="bittorrent.Peer"><argument value="15296726" /><argument value="10000" /></process>
+  <process host="c-36.me" function="bittorrent.Peer"><argument value="12975031" /><argument value="10000" /></process>
+  <process host="c-37.me" function="bittorrent.Peer"><argument value="4071508" /><argument value="10000" /></process>
+  <process host="c-38.me" function="bittorrent.Peer"><argument value="2623571" /><argument value="10000" /></process>
+  <process host="c-39.me" function="bittorrent.Peer"><argument value="14242897" /><argument value="10000" /></process>
+  <process host="c-40.me" function="bittorrent.Peer"><argument value="15623518" /><argument value="10000" /></process>
+  <process host="c-41.me" function="bittorrent.Peer"><argument value="3283098" /><argument value="10000" /></process>
+  <process host="c-42.me" function="bittorrent.Peer"><argument value="6791370" /><argument value="10000" /></process>
+  <process host="c-43.me" function="bittorrent.Peer"><argument value="15187870" /><argument value="10000" /></process>
+  <process host="c-44.me" function="bittorrent.Peer"><argument value="606619" /><argument value="10000" /></process>
+  <process host="c-45.me" function="bittorrent.Peer"><argument value="6760186" /><argument value="10000" /></process>
+  <process host="c-46.me" function="bittorrent.Peer"><argument value="8383041" /><argument value="10000" /></process>
+  <process host="c-47.me" function="bittorrent.Peer"><argument value="7909380" /><argument value="10000" /></process>
+  <process host="c-48.me" function="bittorrent.Peer"><argument value="14316404" /><argument value="10000" /></process>
+  <process host="c-49.me" function="bittorrent.Peer"><argument value="7196296" /><argument value="10000" /></process>
+  <process host="c-50.me" function="bittorrent.Peer"><argument value="977642" /><argument value="10000" /></process>
+  <process host="c-51.me" function="bittorrent.Peer"><argument value="9198902" /><argument value="10000" /></process>
+  <process host="c-52.me" function="bittorrent.Peer"><argument value="2040835" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-53.me" function="bittorrent.Peer"><argument value="6139070" /><argument value="10000" /></process>
+  <process host="c-54.me" function="bittorrent.Peer"><argument value="7348255" /><argument value="10000" /></process>
+  <process host="c-55.me" function="bittorrent.Peer"><argument value="13604799" /><argument value="10000" /></process>
+  <process host="c-56.me" function="bittorrent.Peer"><argument value="13757518" /><argument value="10000" /></process>
+  <process host="c-57.me" function="bittorrent.Peer"><argument value="13953406" /><argument value="10000" /></process>
+  <process host="c-58.me" function="bittorrent.Peer"><argument value="9454902" /><argument value="10000" /></process>
+  <process host="c-59.me" function="bittorrent.Peer"><argument value="15019982" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-60.me" function="bittorrent.Peer"><argument value="12524743" /><argument value="10000" /></process>
+  <process host="c-61.me" function="bittorrent.Peer"><argument value="12864764" /><argument value="10000" /></process>
+  <process host="c-62.me" function="bittorrent.Peer"><argument value="4911519" /><argument value="10000" /></process>
+  <process host="c-63.me" function="bittorrent.Peer"><argument value="13944912" /><argument value="10000" /></process>
+  <process host="c-64.me" function="bittorrent.Peer"><argument value="194725" /><argument value="10000" /></process>
+  <process host="c-65.me" function="bittorrent.Peer"><argument value="4957305" /><argument value="10000" /></process>
+  <process host="c-66.me" function="bittorrent.Peer"><argument value="4788208" /><argument value="10000" /></process>
+  <process host="c-67.me" function="bittorrent.Peer"><argument value="13672849" /><argument value="10000" /></process>
+  <process host="c-68.me" function="bittorrent.Peer"><argument value="8033485" /><argument value="10000" /></process>
+  <process host="c-69.me" function="bittorrent.Peer"><argument value="14225225" /><argument value="10000" /></process>
+  <process host="c-70.me" function="bittorrent.Peer"><argument value="4182628" /><argument value="10000" /></process>
+  <process host="c-71.me" function="bittorrent.Peer"><argument value="10495595" /><argument value="10000" /></process>
+  <process host="c-72.me" function="bittorrent.Peer"><argument value="15530590" /><argument value="10000" /></process>
+  <process host="c-73.me" function="bittorrent.Peer"><argument value="8121559" /><argument value="10000" /></process>
+  <process host="c-74.me" function="bittorrent.Peer"><argument value="5281538" /><argument value="10000" /></process>
+  <process host="c-75.me" function="bittorrent.Peer"><argument value="2315872" /><argument value="10000" /></process>
+  <process host="c-76.me" function="bittorrent.Peer"><argument value="6053782" /><argument value="10000" /></process>
+  <process host="c-77.me" function="bittorrent.Peer"><argument value="16464223" /><argument value="10000" /></process>
+  <process host="c-78.me" function="bittorrent.Peer"><argument value="15257253" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-79.me" function="bittorrent.Peer"><argument value="10957915" /><argument value="10000" /></process>
+  <process host="c-80.me" function="bittorrent.Peer"><argument value="10194417" /><argument value="10000" /></process>
+  <process host="c-81.me" function="bittorrent.Peer"><argument value="6001695" /><argument value="10000" /></process>
+  <process host="c-82.me" function="bittorrent.Peer"><argument value="6388266" /><argument value="10000" /></process>
+  <process host="c-83.me" function="bittorrent.Peer"><argument value="12927311" /><argument value="10000" /></process>
+  <process host="c-84.me" function="bittorrent.Peer"><argument value="4143762" /><argument value="10000" /></process>
+  <process host="c-85.me" function="bittorrent.Peer"><argument value="1220753" /><argument value="10000" /></process>
+  <process host="c-86.me" function="bittorrent.Peer"><argument value="5363893" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-87.me" function="bittorrent.Peer"><argument value="11787557" /><argument value="10000" /></process>
+  <process host="c-88.me" function="bittorrent.Peer"><argument value="2844177" /><argument value="10000" /></process>
+  <process host="c-89.me" function="bittorrent.Peer"><argument value="16106638" /><argument value="10000" /></process>
+  <process host="c-90.me" function="bittorrent.Peer"><argument value="3253351" /><argument value="10000" /><argument value="1" /></process>
+  <process host="c-91.me" function="bittorrent.Peer"><argument value="10009024" /><argument value="10000" /></process>
+  <process host="c-92.me" function="bittorrent.Peer"><argument value="11592989" /><argument value="10000" /></process>
+  <process host="c-93.me" function="bittorrent.Peer"><argument value="15718813" /><argument value="10000" /></process>
+  <process host="c-94.me" function="bittorrent.Peer"><argument value="7847883" /><argument value="10000" /></process>
+  <process host="c-95.me" function="bittorrent.Peer"><argument value="13048705" /><argument value="10000" /></process>
+  <process host="c-96.me" function="bittorrent.Peer"><argument value="9160744" /><argument value="10000" /></process>
+  <process host="c-97.me" function="bittorrent.Peer"><argument value="4555381" /><argument value="10000" /></process>
+  <process host="c-98.me" function="bittorrent.Peer"><argument value="1971239" /><argument value="10000" /></process>
+  <process host="c-99.me" function="bittorrent.Peer"><argument value="7582577" /><argument value="10000" /></process>
+</platform>
