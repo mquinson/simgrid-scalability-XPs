@@ -1,0 +1,29 @@
+#!/bin/bash
+bin="$CORO_JVM_PATH/java -Xss160k -Dcoro.stacksPerThread=30000000 -cp $HOME/simgrid-java/simgrid.jar:$HOME/simgrid-java/examples masterslave/Masterslave"
+timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
+me=tmp/`hostname -s`
+
+test -e tmp || mkdir tmp
+
+for nodes in 10 100 500 1000 2000 5000 10000; do
+    for tasks in 1000 10000 100000 500000 1000000; do
+      echo "$nodes nodes, $tasks tasks network LV08 precision 1e-5"
+      cmd="$bin One_cluster_nobb_"$nodes"_hosts.xml masterslave$nodes-$tasks.xml --cfg=network/model:LV08"
+      cmd="$cmd --log=root.thres:critical "
+      echo $cmd
+      
+      /usr/bin/time -f "$timefmt" -o $me.timings $cmd size:$size
+
+      if grep "Command terminated by signal" $me.timings ; then
+        echo "Damn, error detected:"
+      elif grep "Command exited with non-zero status" $me.timings ; then
+        echo "Damn, error detected:"
+      else
+        echo
+        echo -n "XXXX PRECIOUS_RESULT XXXX size:$size"
+      fi
+      cat $me.timings
+      echo
+    done
+done
+
