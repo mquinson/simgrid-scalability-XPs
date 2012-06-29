@@ -1,4 +1,4 @@
 #! /bin/bash
 
 cd /home/mquinson/simgrid-scalability-XPs.git/simgrid-chord
-./exp_lv5_par_2m 2>&1 |cat >> ~/simgrid-scalability-XPs.git/logs/simgrid-chord.`date +%y%m%d`.`hostname`
+./exp_lv5_par_2m 2>&1 |cat >> ~/simgrid-scalability-XPs.git/logs/simgrid-chord.`date +%y%m%d%H%M`.`hostname`

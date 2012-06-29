@@ -1,0 +1,4 @@
+#! /bin/bash
+
+cd ~/simgrid-scalability-XPs/simgrid-masterslave-java
+./exp_lv5_thread_10k 2>&1 |cat >> ~/simgrid-scalability-XPs/logs/simgrid-masterslave-java.`date +%y%m%d%H%M`.`hostname`

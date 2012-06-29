@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid.dtd">
+<platform version="3">
+  <process host="c-0.me" function="chord.Node"><argument value="42"/><argument value="1000"/></process>
+  <process host="c-1.me" function="chord.Node"><argument value="864630925" /><argument value="42" /><argument value="10" /><argument value="1000" /></process>
+  <process host="c-2.me" function="chord.Node"><argument value="687318347" /><argument value="42" /><argument value="20" /><argument value="1000" /></process>
+  <process host="c-3.me" function="chord.Node"><argument value="434386266" /><argument value="42" /><argument value="30" /><argument value="1000" /></process>
+  <process host="c-4.me" function="chord.Node"><argument value="920670011" /><argument value="42" /><argument value="40" /><argument value="1000" /></process>
+  <process host="c-5.me" function="chord.Node"><argument value="113881928" /><argument value="920670011" /><argument value="50" /><argument value="1000" /></process>
+  <process host="c-6.me" function="chord.Node"><argument value="1893444665" /><argument value="434386266" /><argument value="60" /><argument value="1000" /></process>
+  <process host="c-7.me" function="chord.Node"><argument value="956230121" /><argument value="920670011" /><argument value="70" /><argument value="1000" /></process>
+  <process host="c-8.me" function="chord.Node"><argument value="1583941682" /><argument value="920670011" /><argument value="80" /><argument value="1000" /></process>
+  <process host="c-9.me" function="chord.Node"><argument value="271373406" /><argument value="1893444665" /><argument value="90" /><argument value="1000" /></process>
+</platform>
