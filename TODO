@@ -1,4 +1,8 @@
-slave:651 task:392751 jobsize:807130 infilesize:715161 outfilesize:918949
-/usr/bin/time: tmp/graphene-28.timings: No such file or directory
-grep: tmp/graphene-28.timings: No such file or directory
-grep: tmp/graphene-28.timings: No such file or directory
+# vi: set ft=changelog :
+Sebastien Badia - Sebian <se@sebian.fr>
+  * simgrid:
+    - repo sg (pour pull/compiler) avant chaque exec.
+    - update des LD_LIBRARY_PATH=/home/mquinson/install-3.7/lib (login dependent)
+  * sg-scalability:
+    - grapher le tout
+    - revue des notifs (graphs/events)

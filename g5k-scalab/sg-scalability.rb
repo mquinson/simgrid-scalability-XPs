@@ -28,7 +28,6 @@ require 'yaml'
 require 'optparse'
 
 $tlaunch = Time::now
-$scalab = YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml")))
 
 def time_elapsed
   return (Time::now - $tlaunch).to_i
@@ -38,19 +37,19 @@ class SimgridScalability < Grid5000::Campaign::Engine
   set :environment, "squeeze-x64-nfs"
   set :resources, "nodes=1"
   set :properties, "cluster='graphene'"
-  set :walltime, 3600
+  set :walltime, 36000
   set :notifications, ["xmpp:#{ENV['USER']}@jabber.grid5000.fr"]
   set :site, "nancy"
   set :name, "SG::Scalab"
-  set :no_cleanup, true
-  set :no_cancel, true
+  #set :no_cleanup, true
+  #set :no_cancel, true
 
   after :deployment! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Nodes have been deployed: #{env[:nodes].inspect}"
     env
   end
 
-  on :install! do |env, *args|
+  before :install! do |env, *args|
     logger.info "[#{env[:site]}](#{time_elapsed}) Installing additional software on the nodes..."
     env[:nodes].each do |node|
       ssh(node, "root",:timeout => 10) do |ssh|
@@ -61,20 +60,51 @@ class SimgridScalability < Grid5000::Campaign::Engine
     env
   end
 
-  after :install! do |env, *args|
-    logger.info "[#{env[:site]}](#{time_elapsed}) Prepare nodes for experiments..."
-    env[:nodes].each do |node|
-      ssh(node, "root",:timeout => 10) do |ssh|
-        out = ssh.exec!("swapoff -av")
-        logger.debug out
+  on :install! do |env, *args|
+    # FIXME deployment
+    Dir.chdir("/home/#{ENV['USER']}") do
+      if File.directory?('simgrid')
+        Dir.chdir('simgrid') do
+          puts "update"
+          %x{https_proxy='http://proxy:3128' git pull}
+        end
+      else
+        puts "clone"
+        %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
+      end
+    end
+
+    #TODO on suppose que last est deja compile
+    Dir.chdir("/home/#{ENV['USER']}/simgrid") do
+      LAST = %x{git log --pretty=format:%h -1}
+      puts "Last sg (#{LAST})"
+      if !File.directory?("/home/#{ENV['USER']}/sg-#{LAST}")
+        Dir.mkdir("/home/#{ENV['USER']}/sg-#{LAST}")
+        puts "compil on node"
+        logger.info "[#{env[:site]}](#{time_elapsed}) Compil on node #{env[:nodes].inspect}..."
+        env[:nodes].each do |node|
+          ssh(node, ENV['USER'],:timeout => 10) do |ssh|
+             out = ssh.exec!("cd ~/simgrid/;cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{LAST} -Denable_smpi=off ./;make;make install")
+             logger.debug out
+          end
+        end
+        logger.info "[#{env[:site]}](#{time_elapsed}) Compil OK on node #{env[:nodes].inspect}..."
       end
     end
     env
   end
 
   on :execute! do |env, *args|
-    $scalab.each_pair do |xp,cmd|
-      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment..."
+    #FIXME
+    #set a specific path for simgrid compil, so dyn replace in expe yml
+    def replace_yaml_tokens(yaml_doc, sgpath)
+      yaml_obj = YAML::dump( yaml_doc )
+      yaml_obj.gsub!(/\@SGPATH\@/, sgpath)
+      YAML::load( yaml_obj )
+    end
+    conf = replace_yaml_tokens(YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml"))),"~/sg-#{LAST}")
+    conf.each_pair do |xp,cmd|
+      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment #{LAST}..."
       ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
         logger.info "[#{env[:site]}] Executing command: #{cmd}"
         ssh.exec(cmd)

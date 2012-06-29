@@ -2,6 +2,7 @@
 
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 [[ ! -d tmp ]] && mkdir tmp
+[[ ! -f RunningMasterSlaves.class ]] && javac -cp gridSim.jar:lib/simjava2.jar:. RunningMasterSlaves.java
 me=tmp/`hostname -s`
 
 maxtasks=500000

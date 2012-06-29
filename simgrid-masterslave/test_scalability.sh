@@ -1,5 +1,14 @@
+#!/bin/bash
+# FIXME
+# (a bit ugly) path for v35_ctx/v35_pth/v37
 #set -e
 test_to_run=v37_raw
+
+SGPATH=$1
+if [ -z "$SGPATH" ]
+then
+  SGPATH=/home/mquinson/install-3.7
+fi
 
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 maxslaves=200000
@@ -12,7 +21,7 @@ function cmdline_setup() {
   arg=$1
 
   case X$arg in
-   Xv37*) id=v37 ;     export LD_LIBRARY_PATH=/home/mquinson/install-3.7/lib
+   Xv37*) id=v37 ;     export LD_LIBRARY_PATH=$SGPATH/lib
      master_platf='msg_platform-v361.xml'
      cmd="./masterslave_mailbox-37 msg_platform-v361.xml masterslave_mailbox_deployment.xml --log=msg_test.thres=critical --log=simix_kernel.thres=critical"
      case X$arg in
@@ -144,5 +153,3 @@ else
   dolog "Current test: slave:$slave task:$task"
   runit
 fi
-
-done
