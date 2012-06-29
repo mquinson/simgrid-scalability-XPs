@@ -2,7 +2,7 @@
 
 maxnodes=30000
 
-bin="java -Xss104k -cp $HOME/workspace/simgrid-java/examples:$HOME/workspace/simgrid-java/simgrid.jar bittorrent/Bittorrent "
+bin="java -Xss104k -cp $HOME/simgrid-java/examples:$HOME/simgrid-java/simgrid.jar bittorrent/Bittorrent "
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 me=tmp/`hostname -s`
 

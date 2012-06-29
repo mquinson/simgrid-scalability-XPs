@@ -1,6 +1,6 @@
 #!/bin/bash
 bin="java -Xss160k -cp 
-$HOME/workspace/simgrid-java/examples:$HOME/workspace/simgrid-java/simgrid.jar 
+$HOME/simgrid-java/examples:$HOME/simgrid-java/simgrid.jar 
 chord/Chord "
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 me=tmp/`hostname -s`

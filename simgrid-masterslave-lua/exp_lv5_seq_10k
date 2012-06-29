@@ -1,5 +1,5 @@
 #!/bin/bash
-bin="lua $HOME/workspace/simgrid/examples/lua/masterslave/master_slave.lua "
+bin="lua $HOME/simgrid/examples/lua/masterslave/master_slave.lua "
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"
 me=tmp/`hostname -s`
 
