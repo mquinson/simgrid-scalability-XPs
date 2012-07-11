@@ -28,7 +28,7 @@ require 'yaml'
 require 'optparse'
 
 $tlaunch = Time::now
-CFG = YAML::load(IO::read(File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml")))
+CFG = File.join(File.expand_path(File.dirname(__FILE__)),"scalab.yaml")
 
 def time_elapsed
   return (Time::now - $tlaunch).to_i
@@ -40,7 +40,6 @@ def replace_yaml_tokens(yaml_doc, sgpath)
   yaml_obj.gsub!(/\@SGPATH\@/, sgpath)
   YAML::load( yaml_obj )
 end
-
 
 class SimgridScalability < Grid5000::Campaign::Engine
   set :environment, "squeeze-x64-nfs"
@@ -103,15 +102,19 @@ class SimgridScalability < Grid5000::Campaign::Engine
   end
 
   on :execute! do |env, *args|
-    conf = replace_yaml_tokens(CFG,"~/sg-#{LAST}")
-    conf.each_pair do |xp,cmd|
-      logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment #{LAST}..."
-      ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
-        logger.info "[#{env[:site]}] Executing command: #{cmd}"
-        ssh.exec(cmd)
-        ssh.loop
-      end
-    end
-     env
-  end
+    conf = replace_yaml_tokens(YAML.load_file(CFG),"~/sg-#{LAST}")
+    if conf.has_key?('sg_xp')
+      conf['sg_xp'].each_pair do |xp,cmd|
+        if cmd != nil
+          logger.info "[#{env[:site]}](#{time_elapsed}) Launch #{xp} experiment #{LAST}..."
+          ssh(env[:nodes], ENV['USER'], :multi => true, :timeout => 10) do |ssh|
+            logger.info "[#{env[:site]}] Executing command: #{cmd}"
+            ssh.exec(cmd)
+            ssh.loop
+          end # ssh loop
+        end
+      end # each_pair
+    end # if has_key
+    env
+  end # on execute
 end # class SimgridScalability < Grid5000::Campaign::Engine

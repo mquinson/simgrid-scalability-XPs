@@ -1,3 +1,5 @@
 ---
-simgrid-masterslave: "cd simgrid-scalability-XPs/simgrid-masterslave; ./test_scalability.sh @SGPATH@ 2>&1 |cat >> ../logs/simgrid-masterslave.output.`date +%y%m%d`.`hostname`"
-simgrid-goal: "cd simgrid-scalability-XPs/simgrid-goal; ./testall.sh @SGPATH@ 2>&1 |cat >> ../logs/simgrid-goal.`date +%y%m%d`.`hostname`"
+sources: 'https://gforge.inria.fr/git/simgrid/simgrid.git'
+sg_xp:
+  simgrid_masterslave: "cd simgrid-scalability-XPs/simgrid-masterslave; ./test_scalability.sh @SGPATH@ 2>&1 |cat >> ../logs/simgrid-masterslave.output.`date +%y%m%d`.`hostname`"
+  simgrid_goal: "cd simgrid-scalability-XPs/simgrid-goal; ./testall.sh @SGPATH@ 2>&1 |cat >> ../logs/simgrid-goal.`date +%y%m%d`.`hostname`"
