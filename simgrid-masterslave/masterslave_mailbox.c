@@ -48,24 +48,24 @@ int master(int argc, char *argv[])
     sprintf(mailbox,"slave-%ld",i % slaves_count);
     sprintf(sprintf_buffer, "Task_%d", i);
     task = MSG_task_create(sprintf_buffer, task_comp_size, task_comm_size, NULL);
-    if (i%1000 == 0) {	  
+    if (i%1000 == 0) {
       printf("Sending \"%s\" (of %ld) to mailbox \"%s\"\n", task->name, number_of_tasks, mailbox);
       fflush(stdout);
     }
-     
+
     MSG_task_send(task, mailbox);
    // INFO0("Sent");
   }
-  
+
 /*   INFO0("All tasks have been dispatched. Let's tell everybody the computation is over."); */
 /*   for (i = 0; i < slaves_count; i++) { */
 /*     char mailbox[80]; */
-    
+
 /*     sprintf(mailbox,"slave-%d",i % slaves_count); */
 /*     MSG_task_send(MSG_task_create("finalize", 0, 0, 0), */
 /* 		  mailbox); */
 /*   } */
-  
+
 //  INFO0("Goodbye now!");
   exit(0);
 } /* end_of_master */
@@ -92,7 +92,7 @@ int slave(int argc, char *argv[])
 	MSG_task_destroy(task);
 	break;
     }
-     
+
 //    INFO1("Processing \"%s\"", MSG_task_get_name(task));
     MSG_task_execute(task);
 //    INFO1("\"%s\" done", MSG_task_get_name(task));
@@ -111,7 +111,6 @@ MSG_error_t test_all(const char *platform_file,
 
   /* MSG_config("surf_workstation_model","KCCFLN05"); */
   {				/*  Simulation setting */
-    MSG_set_channel_number(0);
     MSG_create_environment(platform_file);
   }
   {                            /*   Application deployment */
@@ -120,7 +119,7 @@ MSG_error_t test_all(const char *platform_file,
     MSG_launch_application(application_file);
   }
   res = MSG_main();
-  
+
   INFO1("Simulation time %g",MSG_get_clock());
   return res;
 } /* end_of_test_all */
