@@ -78,7 +78,7 @@ class SimgridScalability < Grid5000::Campaign::Engine
         end
       else
         puts "clone"
-        %x{https_proxy='http://proxy:3128' git clone https://gforge.inria.fr/git/simgrid/simgrid.git}
+        %x{https_proxy='http://proxy:3128' git clone #{YAML.load_file(CFG)['sources']}}
       end
     end
 
@@ -91,7 +91,7 @@ class SimgridScalability < Grid5000::Campaign::Engine
         logger.info "[#{env[:site]}](#{time_elapsed}) Compil sg-#{LAST} on node #{env[:nodes].inspect}..."
         env[:nodes].each do |node|
           ssh(node, ENV['USER'],:timeout => 10) do |ssh|
-             out = ssh.exec!("cd ~/simgrid/;cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{LAST} -Denable_smpi=off ./;make;make install")
+             out = ssh.exec!("cd ~/simgrid/;cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{LAST} #{YAML.load_file(CFG)['sg_opts']} ./;make;make install")
              logger.debug out
           end
         end
