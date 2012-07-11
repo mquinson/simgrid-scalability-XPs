@@ -6,3 +6,4 @@ Sebastien Badia - Sebian <se@sebian.fr>
   * sg-scalability:
     - grapher le tout
     - revue des notifs (graphs/events)
+    - git: git log --before="1 months ago" -1 --pretty=format:'%h'
