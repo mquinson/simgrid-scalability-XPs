@@ -6,7 +6,7 @@
 sg-scalability a engine for g5k-campaign, in order to launch SimGrid
 scalability tests on Grid'5000.
 For more information see <http://github.com/mquinson/simgrid-scalability-XPs/>
-Copyright (C) 2012  Sebastien Badia
+Copyright © 2012  Sebastien Badia
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -77,11 +77,10 @@ class SimgridScalability < Grid5000::Campaign::Engine
     #TODO on suppose que last est deja compile
     Dir.chdir("/home/#{ENV['USER']}/simgrid") do
       LAST = %x{git log --pretty=format:%h -1}
-      puts "Last sg (#{LAST})"
+      logger.info "[#{env[:site]}](#{time_elapsed}) Use simgrid rev #{LAST}..."
       if !File.directory?("/home/#{ENV['USER']}/sg-#{LAST}")
         Dir.mkdir("/home/#{ENV['USER']}/sg-#{LAST}")
-        puts "compil on node"
-        logger.info "[#{env[:site]}](#{time_elapsed}) Compil on node #{env[:nodes].inspect}..."
+        logger.info "[#{env[:site]}](#{time_elapsed}) Compil sg-#{LAST} on node #{env[:nodes].inspect}..."
         env[:nodes].each do |node|
           ssh(node, ENV['USER'],:timeout => 10) do |ssh|
              out = ssh.exec!("cd ~/simgrid/;cmake -DCMAKE_INSTALL_PREFIX=~/sg-#{LAST} -Denable_smpi=off ./;make;make install")
