@@ -69,7 +69,6 @@ class SimgridScalability < Grid5000::Campaign::Engine
   end
 
   on :install! do |env, *args|
-    # FIXME deployment
     Dir.chdir("/home/#{ENV['USER']}") do
       if File.directory?('simgrid')
         Dir.chdir('simgrid') do
@@ -95,6 +94,8 @@ class SimgridScalability < Grid5000::Campaign::Engine
              logger.debug out
           end
         end
+        #FIXME uggly
+        %x{cd #{File.join(File.expand_path(File.dirname(__FILE__)),'..','simgrid-masterslave')};sed -e "s/@SG_PATH@/\\/home\\/#{ENV['USER']}\\/sg-#{LAST}\\//" -i Makefile;make}
         logger.info "[#{env[:site]}](#{time_elapsed}) Compil OK on node #{env[:nodes].inspect}..."
       end
     end
