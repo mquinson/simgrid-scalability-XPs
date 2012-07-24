@@ -3,7 +3,7 @@
 maxpow=30
 clSize=1024
 degree=64
-SGPATH=/home/mquinson/install-3.7
+SGPATH=/home/mquinson/install/simgrid-3.7
 cmd="./goal_test --cfg=network/model:SMPI platform.xml"
 
 timefmt="clock:%e user:%U sys:%S swapped:%W exitval:%x max:%Mk avg:%Kk # %C"

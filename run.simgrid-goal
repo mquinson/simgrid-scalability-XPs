@@ -1,4 +1,4 @@
 #! /bin/bash
 
-cd /home/mquinson/precious.git/simgrid-goal
-./testall.sh 2>&1 |cat >> ~/precious.git/logs/simgrid-goal.`date +%y%m%d`.`hostname`
+cd /home/mquinson/scalability_platf/simgrid-goal
+./testall.sh 2>&1 |cat >> ~/scalability_platf/logs/simgrid-goal.`date +%y%m%d`.`hostname`

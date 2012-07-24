@@ -15,7 +15,7 @@
 # - constants defined in the first part of the script corresponding to classic cluster parameters. links_bw and links_lat added for the inner tree links
 # - bb_lat and bb_bw used in any backbone of the tree.
 # - fails if you set an obviously too small total number of hosts compared to the cluster size (generates a lot of stuff for nothing actually).
-# 
+#
 
 use Math::BigInt;
 
@@ -69,20 +69,20 @@ if ( $height->bcmp(Math::BigInt->new("1")) != 0 && ($height->copy()->bpow($d))->
 	$height++; #will have to deal with empty set of clusters.	
 	}
 # debug stuff	
-#print "Computed : \n";
-#print STDERR "height: " . $height . "\n";
-#print STDERR "totalnumberofhosts: " . $totalnumberofhosts . "\n";
-#print STDERR "totalnumberofcluster: " .  $totalnumberofCluster . "\n";
-#print STDERR "last cluster size (if equals to cluster size, then all clusters will be homogeneous) : " . $last . "\n";
+# print "Computed : \n";
+# print STDERR "height: " . $height . "\n";
+# print STDERR "totalnumberofhosts: " . $totalnumberofhosts . "\n";
+# print STDERR "totalnumberofcluster: " .  $totalnumberofCluster . "\n";
+# print STDERR "last cluster size (if equals to cluster size, then all clusters will be homogeneous) : " . $last . "\n";
 
-# Counter for giving unique IDs to ASes.
+# Counter for giving unique IDs to ASes.
 $ASnumber;
 $ASnumber = 0;
 
-# Printing preamble
+# Printing preamble
 print "<?xml version='1.0'?>\n";
 print "<!DOCTYPE platform SYSTEM \"http://simgrid.gforge.inria.fr/simgrid.dtd\">\n";
-print "<platform version=\"3\">\n";
+print "<platform version=\"3\">\n\n";
 
 	
 # Initiate recursion ...
@@ -91,21 +91,22 @@ print "<platform version=\"3\">\n";
 # Closing tag, and then back home
 print "</platform>\n";	
 
+
 # Recursive stuff for depth first Se... Creation
 sub DF_creation {
 	my($currDepth) = @_;
 	
-	# Curr AS creation
+	# Curr AS creation
 	print "<AS id=\"". $prefix . "AS_" . $ASnumber . $suffix . "\"  routing=\"Full\">\n";	
 	
-	# Curr router AS creation stuff
+	# Curr router AS creation stuff
 	print "<AS id=\"". $prefix . "exitAS_" . $ASnumber . $suffix . "\"  routing=\"Full\">\n";			 
 	print "	<router id=\"" . $prefix . "router_" . $ASnumber . $suffix . "\"/>\n";
 	print "</AS>\n";
-	# Saving my current number to return it to my father
+	# Saving my current number to return it to my father
 	my $toReturn = $ASnumber;
 	$ASnumber++;
-	if ($currDepth<$height && $totalnumberofCluster > 0)
+	if ($currDepth<=$height && $totalnumberofCluster > 0)
 		{		
 		# Creating current AS inner stuff
 		# I should have a table of sons numbers.
@@ -162,12 +163,12 @@ sub DF_creation {
 			$lastNumberOfClusterCreated++;
 			if ($totalnumberofCluster==1)
 			{
-			print "<cluster id=\"". $prefix . "cl_" . $toReturn . $i . $suffix . "\" prefix=\"" . $prefix . "c_" . $toReturn. $i . "-\" suffix=\"" . $suffix . "\" radical=\"1-"
+			print "<cluster id=\"". $prefix . "cl_" . $toReturn . "_" . $i . $suffix . "\" prefix=\"" . $prefix . "c_" . $toReturn . "_" . $i . "-\" suffix=\"" . $suffix . "\" radical=\"1-"
 				. $last . "\" power=\"" . $power . "\" bw=\"" . $bw . "\" lat=\"" . $lat . "\" bb_bw=\"" . $bb_bw . "\" bb_lat=\"" . $bb_lat . "\"/>\n";	
 			}
 			else 
 			{	
-			print "<cluster id=\"". $prefix . "cl_" . $toReturn . $i . $suffix . "\" prefix=\"" . $prefix . "c_" . $toReturn. $i . "-\" suffix=\"" . $suffix . "\" radical=\""
+			print "<cluster id=\"". $prefix . "cl_" . $toReturn . "_" . $i . $suffix . "\" prefix=\"" . $prefix . "c_" . $toReturn . "_" . $i . "-\" suffix=\"" . $suffix . "\" radical=\""
 				. $radical . "\" power=\"" . $power . "\" bw=\"" . $bw . "\" lat=\"" . $lat . "\" bb_bw=\"" . $bb_bw . "\" bb_lat=\"" . $bb_lat . "\"/>\n";	
 			}
 			$totalnumberofCluster--;
@@ -186,11 +187,11 @@ sub DF_creation {
 			{
 					for (my $j =$i+1; $j<=$lastNumberOfClusterCreated ; $j++)
 					{
-						print  "<ASroute src=\"" . $prefix . "cl_" . $toReturn . $i . $suffix .  "\"\n";
-						print "	dst=\"" .  $prefix . "cl_" . $toReturn . $j . $suffix .  "\"\n";
+						print  "<ASroute src=\"" . $prefix . "cl_" . $toReturn . "_" . $i . $suffix .  "\"\n";
+						print "	dst=\"" .  $prefix . "cl_" . $toReturn . "_" . $j . $suffix .  "\"\n";
 
-						print "	gw_src=\"" . $prefix . "c_" . $toReturn. $i . "-" . $prefix . "cl_" . $toReturn . $i . $suffix . "_router" . $suffix  ."\"\n";
-						print "	gw_dst=\"" . $prefix . "c_" . $toReturn. $j . "-" . $prefix . "cl_" . $toReturn . $j . $suffix  . "_router" . $suffix . "\"\n";
+						print "	gw_src=\"" . $prefix . "c_" . $toReturn . "_" . $i . "-" . $prefix . "cl_" . $toReturn . "_" . $i . $suffix . "_router" . $suffix  ."\"\n";
+						print "	gw_dst=\"" . $prefix . "c_" . $toReturn . "_" . $j . "-" . $prefix . "cl_" . $toReturn . "_" . $j . $suffix  . "_router" . $suffix . "\"\n";
 						print "	symmetrical=\"YES\">\n";
 						
 						print "		<link_ctn id=\"" . $prefix . $toReturn. "_" . $i . $suffix . "\"/>\n";
@@ -202,10 +203,10 @@ sub DF_creation {
 		# Now routes to the exit AS
 		for (my $i =1; $i<=$lastNumberOfClusterCreated ; $i++)
 		{
-			print  "<ASroute src=\""  . $prefix . "cl_" . $toReturn . $i . $suffix  . "\"\n";
+			print  "<ASroute src=\""  . $prefix . "cl_" . $toReturn . "_" . $i . $suffix  . "\"\n";
 			print "	dst=\"" . $prefix . "exitAS_" . $toReturn . $suffix . "\"\n";
-			# SAME HERE !!
-			print "	gw_src=\"" . $prefix . "c_" . $toReturn. $i . "-" . $prefix . "cl_" . $toReturn . $i . $suffix . "_router" . $suffix  ."\"\n";
+			# SAME HERE !!
+			print "	gw_src=\"" . $prefix . "c_" . $toReturn . "_" . $i . "-" . $prefix . "cl_" . $toReturn . "_" . $i . $suffix . "_router" . $suffix  ."\"\n";
 			print "	gw_dst=\"" . $prefix . "router_" . $toReturn . $suffix . "\"\n";
 			print "	symmetrical=\"YES\">\n";						
 			print "		<link_ctn id=\"" . $prefix . $toReturn . "_" . $i . $suffix . "\"/>\n";
