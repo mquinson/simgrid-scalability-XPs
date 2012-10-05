@@ -1,6 +1,0 @@
----
-sources: 'git://scm.gforge.inria.fr/simgrid/simgrid.git'
-sg_opts: '-Denable_smpi=off'
-sg_xp:
-  simgrid_masterslave: "cd simgrid-scalability-XPs/simgrid-masterslave; ./test_scalability.sh @SGPATH@ 2>&1 |cat >> ../logs/simgrid-masterslave.output.`date +%y%m%d`.`hostname`"
-  simgrid_goal: "cd simgrid-scalability-XPs/simgrid-goal; ./testall.sh @SGPATH@ 2>&1 |cat >> ../logs/simgrid-goal.`date +%y%m%d`.`hostname`"
