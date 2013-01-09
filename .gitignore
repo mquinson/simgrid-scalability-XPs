@@ -1,5 +1,6 @@
 *~
 *.class
+*.swp
 
 gridsim/GridSim_stat.txt
 gridsim/sim_report
@@ -7,6 +8,7 @@ gridsim/sim_trace
 gridsim/tmp/*
 
 simgrid-masterslave/tmp/*
+gridsim-masterslave/tmp/*
 
 simgrid-goal/goal_test
 simgrid-goal/platform.xml

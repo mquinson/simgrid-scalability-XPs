@@ -1,0 +1,9 @@
+# vi: set ft=changelog :
+Sebastien Badia - Sebian <se@sebian.fr>
+  * simgrid:
+    - repo sg (pour pull/compiler) avant chaque exec.
+    - update des LD_LIBRARY_PATH=/home/mquinson/install-3.7/lib (login dependent)
+  * sg-scalability:
+    - grapher le tout
+    - revue des notifs (graphs/events)
+    - git: git log --before="1 months ago" -1 --pretty=format:'%h'
